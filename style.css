@@ -5,17 +5,17 @@
    ========================================================================== */
 
 :root { /* :root targets the whole document so these custom properties (variables) are available everywhere */
-  /* Color palette */
-  --reef-deep:      #0B3D42;   /* near-black teal — used for dark section backgrounds */
-  --lagoon:         #10585A;   /* primary brand teal — used for links, buttons, accents */
-  --tide:           #2FBFB0;   /* bright turquoise accent — used for highlights and the tide line */
-  --palm:           #163C2E;   /* deep forest green — used for the Culture section background */
-  --sand:           #F4EEDC;   /* warm sandy background — used for light alternating sections */
-  --shell:          #FFFDF8;   /* near-white — used for card surfaces and light text on dark backgrounds */
-  --coral:          #F2703A;   /* coral/orange accent — used for primary buttons and call-to-action elements */
-  --coral-deep:     #D65A28;   /* darker coral — used for button hover states */
-  --ink:            #0E1C19;   /* near-black — used for main body text */
-  --ink-soft:       #3E524E;   /* softer gray-green — used for secondary/paragraph text */
+  /* Madang provincial flag-inspired palette */
+  --reef-deep:      #000000;   /* black — used for dark section backgrounds */
+  --lagoon:         #AA0000;   /* deep red — used for primary links, buttons, and accents */
+  --tide:           #FFCC00;   /* gold/yellow — used for highlights and the tide line */
+  --palm:           #5C0000;   /* dark maroon — used for contrast-heavy section backgrounds */
+  --sand:           #F6F1E6;   /* warm off-white — used for light alternating sections */
+  --shell:          #FFFFFF;   /* white — used for card surfaces and light text on dark backgrounds */
+  --coral:          #AA0000;   /* red accent — used for primary buttons and CTA elements */
+  --coral-deep:     #7D0000;   /* darker red — used for button hover states */
+  --ink:            #111111;   /* near-black — used for main body text */
+  --ink-soft:       #4A4A4A;   /* muted gray — used for secondary/paragraph text */
 
   /* Type */
   --font-display: "Fraunces", Georgia, serif; /* serif font used for headings; Georgia is the fallback if Fraunces fails to load */
@@ -311,6 +311,30 @@ p { margin: 0; line-height: 1.7; } /* paragraphs have no default margin and comf
 .culture__content p { color: rgba(255,253,248,0.82); margin-bottom: 16px; max-width: 52ch; } /* semi-transparent light paragraph text with spacing and a readable width limit */
 .culture__content .btn { margin-top: 12px; align-self: flex-start; } /* spacing above the button and prevents it from stretching full width */
 
+/*================= MAP =================*/
+.google_maps { padding: 100px 0; background: var(--shell); } /* vertical spacing and light background for the map section */
+.google_maps__frame-wrap {
+  width: min(100%, 1100px);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+.google_maps iframe {
+  display: block;
+  width: 100%;
+  min-height: 320px;
+  height: min(68vh, 620px);
+  border: 0;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  margin: 0 auto;
+}
+
+@media (orientation: portrait) {
+  .google_maps iframe {
+    height: min(52vh, 520px);
+  }
+}
+
 /* ================= PLAN ================= */
 .plan { padding: 100px 0; background: var(--shell); } /* vertical spacing and light background for the planning section */
 .plan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; } /* three equal columns of plan cards */
@@ -329,6 +353,7 @@ p { margin: 0; line-height: 1.7; } /* paragraphs have no default margin and comf
 }
 .plan-detail h4 { font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 10px; color: var(--tide); } /* turquoise heading inside the detail panel */
 .plan-detail p { color: rgba(255,253,248,0.85); } /* semi-transparent light paragraph text inside the detail panel */
+.plan-detail .btn { margin-top: 18px; margin-right: 14px; } /* spacing above, and between, the optional link buttons rendered inside the detail panel */
 
 .plan-cta { text-align: center; margin-top: 50px; } /* centers the "Start Planning" button with space above it */
 
@@ -437,4 +462,83 @@ p { margin: 0; line-height: 1.7; } /* paragraphs have no default margin and comf
   .footer__grid { grid-template-columns: 1fr; padding-bottom: 40px; } /* stacks all footer columns into one on mobile */
   .container { padding: 0 20px; } /* slightly tighter side padding on very small screens */
   .final-cta { padding: 100px 24px; } /* reduces the final CTA section's padding on mobile */
+}
+
+/* ==========================================================================
+   SHARED SUB-PAGE COMPONENTS
+   Added for the Experiences & Adventures and Accommodation & Food pages.
+   These reuse the existing color/type/spacing tokens above so all three
+   pages (home, experiences, accommodation) share one visual system.
+   ========================================================================== */
+
+/* ---- Page hero: a shorter version of .hero for interior pages ---- */
+.hero--page { min-height: 64vh; } /* shorter than the full-screen homepage hero, since sub-pages need room for content below */
+.hero--page .hero__content { padding-bottom: 70px; } /* less bottom padding to match the shorter hero height */
+.hero--page .hero__desc { max-width: 60ch; } /* slightly wider description line length for the sub-page intro copy */
+
+/* ---- Breadcrumb: small wayfinding trail under the nav on interior pages ---- */
+.breadcrumb {
+  display: flex; align-items: center; gap: 8px; /* lays the crumb items out in a row */
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; /* small mono label styling matching the eyebrow style */
+  color: rgba(255,255,255,0.75); position: relative; z-index: 1; /* sits above the hero image/overlay */
+}
+.breadcrumb a { color: rgba(255,255,255,0.75); transition: color 0.25s var(--ease); } /* muted link color with a smooth hover transition */
+.breadcrumb a:hover { color: #fff; } /* brightens on hover */
+.breadcrumb span[aria-hidden] { color: var(--tide); } /* colors the "/" separators turquoise */
+.breadcrumb .breadcrumb__current { color: #fff; } /* the current page's label is fully bright, not a link */
+
+/* ---- Intro lead: a short single-column paragraph under a sub-page hero ---- */
+.page-intro { padding: 70px 0 20px; background: var(--shell); } /* light section with generous top spacing, sitting right below the hero */
+.page-intro .section-lead { max-width: 72ch; font-size: 1.1rem; } /* slightly larger, wider lead paragraph for an introductory statement */
+
+/* ---- Tag row: small pill-shaped category labels shown above a card grid ---- */
+.tag-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px; } /* lays tags out in a wrapping row with spacing below before the cards */
+.tag {
+  display: inline-flex; align-items: center; padding: 8px 18px; border-radius: 100px; /* pill shape */
+  background: var(--sand); color: var(--lagoon); font-family: var(--font-mono); font-size: 0.75rem; /* sandy background with mono teal text, matching the eyebrow/mono styling elsewhere */
+  letter-spacing: 0.04em; border: 1px solid rgba(16,88,90,0.15); /* faint border to define the pill edge */
+}
+.tag--light { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.3); } /* variant used for tag rows over dark sections */
+
+/* ---- Split: a two-column media/text "spotlight" block, like .about but reusable for any spotlighted card ---- */
+.split { padding: 30px 0 60px; background: var(--shell); } /* light background with vertical spacing, matching .about's rhythm */
+.split__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; } /* two equal columns, vertically centered, slightly tighter gap than .about */
+.split--reverse .split__grid { direction: rtl; } /* flips the column order for the reversed variant */
+.split--reverse .split__grid > * { direction: ltr; } /* resets text direction inside the flipped columns so content still reads left-to-right */
+.split__media img { width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-card); aspect-ratio: 4/3; object-fit: cover; } /* rounded, shadowed image matching the site's card language */
+.split__content p { color: var(--ink-soft); margin-bottom: 16px; } /* muted paragraph spacing matching other body copy */
+.split__content .tag-row { margin-bottom: 20px; } /* tighter tag spacing inside a split block than a full section */
+.split--dark { background: var(--reef-deep); } /* dark variant used when a spotlight sits inside a dark section */
+.split--dark .split__content p { color: rgba(255,253,248,0.78); } /* lighter paragraph text for the dark variant */
+.split--dark .split__content h3, .split--dark .split__content h2 { color: var(--shell); } /* light heading color for the dark variant */
+
+/* ---- Simple grid card variant used for accommodation/food categories (image top, text below, like .exp-card but on a light background) ---- */
+.info-card {
+  background: var(--shell); border: 1px solid rgba(11,61,66,0.1); border-radius: var(--radius-md); overflow: hidden; /* light card with a faint border, rounded and clipped */
+  box-shadow: var(--shadow-card); transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease); /* soft shadow with a smooth hover lift */
+}
+.info-card:hover { transform: translateY(-6px); box-shadow: 0 26px 46px -20px rgba(11,61,66,0.32); } /* lifts and deepens the shadow on hover */
+.info-card__media { aspect-ratio: 4/3; overflow: hidden; } /* fixed-ratio image area, clipped for the zoom effect below */
+.info-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); } /* image fills its box and animates smoothly when scaled */
+.info-card:hover .info-card__media img { transform: scale(1.07); } /* subtle zoom on hover, matching .exp-card's behavior */
+.info-card__body { padding: 24px 26px 28px; } /* inner spacing for the card's text content */
+.info-card__body h3 { font-size: 1.2rem; margin: 4px 0 10px; } /* card heading size and spacing */
+.info-card__body p { color: var(--ink-soft); font-size: 0.94rem; } /* muted description text */
+
+/* ---- Cross-page CTA banner: a slim strip linking between the three pages ---- */
+.page-link-banner {
+  background: var(--sand); padding: 60px 0; text-align: center; /* sandy strip with centered content */
+}
+.page-link-banner .section-title { max-width: none; margin: 0 auto 12px; } /* removes the usual heading width cap since this is a short, centered line */
+.page-link-banner p { color: var(--ink-soft); max-width: 60ch; margin: 0 auto 28px; } /* muted, centered supporting text */
+.page-link-banner .btn-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; } /* lays out one or more CTA buttons centered, wrapping on small screens */
+
+@media (max-width: 860px) {
+  .split__grid { grid-template-columns: 1fr; gap: 30px; } /* stacks the split media/text into a single column on tablets and below */
+  .split--reverse .split__grid { direction: ltr; } /* cancels the reverse flip once stacked, since there's only one column left */
+}
+
+@media (max-width: 760px) {
+  .hero--page { min-height: 52vh; } /* shorter still on mobile, since there's less need for a tall hero on small screens */
+  .page-link-banner .btn-row { flex-direction: column; align-items: stretch; } /* stacks CTA buttons full-width on mobile */
 }
