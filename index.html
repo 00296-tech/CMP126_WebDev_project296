@@ -12,7 +12,8 @@
 
 <link rel="stylesheet" href="style.css"> <!-- Loads the external stylesheet that controls all visual styling -->
 </head> <!-- Ends the head/metadata section -->
-<body> <!-- Start of the visible page content -->
+
+<body data-page="home"> <!-- Start of the visible page content; data-page tells script.js this is the homepage, so it should use scroll-spy nav highlighting instead of a fixed active link -->
 
 <!-- Tide line — signature scroll progress indicator -->
 <div class="tide-line" aria-hidden="true"> <!-- Fixed strip at the top of the page; aria-hidden hides it from screen readers since it's decorative -->
@@ -36,12 +37,12 @@
     </a> <!-- Closes the brand link -->
 
     <nav class="nav__links" id="navLinks" aria-label="Primary"> <!-- The list of navigation links; id lets JS open/close it on mobile -->
-      <a href="#home" class="nav__link is-active">Home</a> <!-- Link to the hero/home section; starts marked active -->
-      <a href="#discover" class="nav__link">Discover</a> <!-- Link to the About/Welcome section -->
-      <a href="#experiences" class="nav__link">Experiences</a> <!-- Link to the Experiences section -->
-      <a href="#destinations" class="nav__link">Destinations</a> <!-- Link to the Destinations section -->
-      <a href="#culture" class="nav__link">Culture</a> <!-- Link to the Culture section -->
-      <a href="#plan" class="nav__link">Plan Your Trip</a> <!-- Link to the Plan Your Trip section -->
+      <a href="#home" class="nav__link" data-page="home">Home</a> <!-- Link to the hero/home section; data-page marks it for the site-wide active-link logic -->
+      <a href="experiences.html" class="nav__link" data-page="experiences">Experiences &amp; Adventures</a> <!-- Links to the dedicated Experiences & Adventures page -->
+      <a href="#destinations" class="nav__link">Destinations</a> <!-- Link to the Destinations section on this page -->
+      <a href="#culture" class="nav__link">Culture</a> <!-- Link to the Culture section on this page -->
+      <a href="accommodation.html" class="nav__link" data-page="accommodation">Accommodation &amp; Food</a> <!-- Links to the dedicated Accommodation & Food page -->
+      <a href="#plan" class="nav__link">Plan Your Trip</a> <!-- Link to the Plan Your Trip section on this page -->
     </nav> <!-- Closes the navigation links list -->
 
     <div class="nav__actions"> <!-- Wrapper for the right-hand side nav controls (button + burger) -->
@@ -58,7 +59,7 @@
   <!-- ============ HERO ============ -->
   <section class="hero" id="home"> <!-- Full-screen hero section; id="home" is the nav target -->
     <div class="hero__media"> <!-- Wrapper that holds the background image and overlay -->
-      <img src="https://cdn.sanity.io/images/we0tdimr/production/5280fae80fa99c42fb2b77b33481adb5687b24fa-3840x2551.jpg?rect=0,196,3840,2160&w=1920&h=1080&q=70&auto=format" alt="Surfing waves along the coastlineof Madang's tropical coast" loading="eager"> <!-- Hero background photo; loading="eager" because it's above the fold and should load immediately -->
+      <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1920&q=80" alt="Image of scuba diver diving in coral waters." loading="eager"> <!-- Hero background photo; loading="eager" because it's above the fold and should load immediately -->
       <div class="hero__overlay"></div> <!-- Empty div styled in CSS as a dark gradient so the white text stays readable over the photo -->
     </div> <!-- Closes hero media wrapper -->
 
@@ -83,7 +84,7 @@
     <div class="container"> <!-- Centers and constrains the width of the content inside -->
       <div class="quicknav__grid"> <!-- CSS grid that lays the four cards out in a row (or fewer on mobile) -->
 
-        <a href="#experiences" class="qcard"> <!-- First quick-nav card, links down to Experiences -->
+        <a href="experiences.html#water-islands" class="qcard"> <!-- First quick-nav card, links to the water & islands section of the Experiences & Adventures page -->
           <span class="qcard__icon" aria-hidden="true"> <!-- Decorative icon wrapper, hidden from screen readers -->
             <svg viewBox="0 0 48 48" fill="none"><path d="M6 34c6-16 12-22 18-22s12 6 18 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><path d="M4 38c6-4 10-4 16 0s10 4 16 0 8-4 8-4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="14" r="4" fill="currentColor"/></svg> <!-- Hand-drawn island/palm icon -->
           </span> <!-- Closes icon wrapper -->
@@ -92,7 +93,7 @@
           <span class="qcard__arrow" aria-hidden="true">&rarr;</span> <!-- Decorative arrow that animates on hover -->
         </a> <!-- Closes first quick-nav card -->
 
-        <a href="#experiences" class="qcard"> <!-- Second quick-nav card, also links to Experiences -->
+        <a href="experiences.html#water-islands" class="qcard"> <!-- Second quick-nav card, links to the water & islands section of the Experiences & Adventures page -->
           <span class="qcard__icon" aria-hidden="true"> <!-- Decorative icon wrapper -->
             <svg viewBox="0 0 48 48" fill="none"><path d="M8 20c8-6 24-6 32 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><path d="M12 28c6-4 18-4 24 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/><circle cx="24" cy="12" r="5" stroke="currentColor" stroke-width="2.5"/><path d="M24 17v22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg> <!-- Hand-drawn diving flag/waves icon -->
           </span> <!-- Closes icon wrapper -->
@@ -110,7 +111,7 @@
           <span class="qcard__arrow" aria-hidden="true">&rarr;</span> <!-- Decorative arrow icon -->
         </a> <!-- Closes third quick-nav card -->
 
-        <a href="#experiences" class="qcard"> <!-- Fourth quick-nav card, links to Experiences -->
+        <a href="experiences.html#nature-wildlife" class="qcard"> <!-- Fourth quick-nav card, links to the nature & wildlife section of the Experiences & Adventures page -->
           <span class="qcard__icon" aria-hidden="true"> <!-- Decorative icon wrapper -->
             <svg viewBox="0 0 48 48" fill="none"><path d="M8 40L20 16l6 10 6-8 8 22" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="36" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/></svg> <!-- Hand-drawn mountain/sun icon representing adventure -->
           </span> <!-- Closes icon wrapper -->
@@ -135,7 +136,9 @@
         <a href="#experiences" class="btn btn--outline">Discover More</a> <!-- Button linking down to the Experiences section -->
       </div> <!-- Closes about text column -->
       <div class="about__media"> <!-- Right column: the featured image and its caption tag -->
-        <img src="https://images.pexels.com/photos/18625026/pexels-photo-18625026.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Rocky, palm-fringed island surrounded by turquoise sea, characteristic of Madang's coastline" loading="lazy"> <!-- Featured photo; loading="lazy" defers loading until it's near the viewport -->
+        <!-- Image alternative src="https://www.facebook.com/100083305594226/posts/the-most-iconic-kalibobo-light-house-in-beautiful-madang-well-captured-by-blue-t/476476711805845/" -->
+
+        <img src="Kalibobo_lighthouse01.jpg" alt="Iconic Kalibobo Lighthouse in Madang, along the north coast of Papua New Guinea" loading="lazy"> <!-- Featured photo; loading="lazy" defers loading until it's near the viewport -->
         <div class="about__media-tag"> <!-- Small badge overlapping the bottom-left corner of the image -->
           <span class="eyebrow eyebrow--mono">north coast · PNG</span> <!-- Label text inside the badge -->
         </div> <!-- Closes the media tag badge -->
@@ -157,7 +160,7 @@
 
         <article class="exp-card"> <!-- Card 1: Island Hopping -->
           <div class="exp-card__media"> <!-- Wrapper that crops/sizes the card image -->
-            <img src="https://images.pexels.com/photos/30447886/pexels-photo-30447886.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Aerial view of a tropical beach lined with palm trees" loading="lazy"> <!-- Card photo, lazy-loaded since it's below the fold -->
+            <img src="https://images.trvl-media.com/place/2200/8434f81c-63f8-4d87-891b-596296224a2b.jpg?auto=compress&cs=tinysrgb&w=1000" alt="Aerial view of snorkling along an island" loading="lazy"> <!-- Card photo, lazy-loaded since it's below the fold -->
           </div> <!-- Closes media wrapper -->
           <div class="exp-card__body"> <!-- Text content area of the card -->
             <span class="eyebrow eyebrow--mono">01 · on the water</span> <!-- Numbered category label -->
@@ -181,7 +184,7 @@
 
         <article class="exp-card"> <!-- Card 3: Cultural Experiences -->
           <div class="exp-card__media"> <!-- Image wrapper -->
-            <img src="https://images.trvl-media.com/place/2200/9c62623a-3e90-42ce-a5d0-fafba3432986.jpg" alt="Close-up of hands weaving a traditional basket by hand" loading="lazy"> <!-- Card photo -->
+            <img src="https://images.trvl-media.com/place/2200/9c62623a-3e90-42ce-a5d0-fafba3432986.jpg" alt="Close-up of girl in traditional attire" loading="lazy"> <!-- Card photo -->
           </div> <!-- Closes media wrapper -->
           <div class="exp-card__body"> <!-- Text content area -->
             <span class="eyebrow eyebrow--mono">03 · community</span> <!-- Numbered category label -->
@@ -205,7 +208,7 @@
 
         <article class="exp-card"> <!-- Card 5: Fishing & Ocean Adventures -->
           <div class="exp-card__media"> <!-- Image wrapper -->
-            <img src="https://images.pexels.com/photos/29773805/pexels-photo-29773805.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Clear tropical ocean water along a palm-lined shore" loading="lazy"> <!-- Card photo -->
+            <img src="https://papuanewguinea.travel/wp-content/uploads/2023/10/sport-fisher_sportfishing-png_papua-new-guinea_2_0-1024x683.jpg?auto=compress&cs=tinysrgb&w=1000" alt="Fishing boat in clear tropical waters" loading="lazy"> <!-- Card photo -->
           </div> <!-- Closes media wrapper -->
           <div class="exp-card__body"> <!-- Text content area -->
             <span class="eyebrow eyebrow--mono">05 · on the water</span> <!-- Numbered category label -->
@@ -228,6 +231,9 @@
         </article> <!-- Closes card 6 -->
 
       </div> <!-- Closes experiences grid -->
+      <div class="plan-cta"> <!-- Reuses the same centered-button wrapper style as the Plan section -->
+        <a href="experiences.html" class="btn btn--outline-light">View All Experiences &amp; Adventures</a> <!-- Links to the full Experiences & Adventures page for the complete list -->
+      </div> <!-- Closes the view-all CTA wrapper -->
     </div> <!-- Closes container -->
   </section> <!-- Closes Experiences section -->
 
@@ -270,7 +276,7 @@
         </article> <!-- Closes Bilbil Island card -->
 
         <article class="dest-card"> <!-- Fourth card: Jais Aben & the Coast -->
-          <img src="https://scontent-syd2-1.xx.fbcdn.net/v/t39.99422-6/748614718_1052929630634469_6953260480431918478_n.png?stp=dst-jpg_tt6&cstp=mx1638x2048&ctp=s1638x2048&_nc_cat=111&ccb=1-7&_nc_sid=f727a1&_nc_ohc=c7AftEMve_QQ7kNvwGZb9Yz&_nc_oc=Adqqy3fhkl1mVDVo7RvuGmWR9gsH3_vr6nnK-6G9tb6GO4BUZKNMjWWttfUiorGXNSs&_nc_zt=14&_nc_ht=scontent-syd2-1.xx&_nc_gid=3ZUV0bsaBMYOckGpQ805rg&_nc_ss=7b289&oh=00_AQIc9BbwTVEOT0AMVWrnfIbd6b8b3J58-qoynPSFM7jyZw&oe=6A98120C" alt="Clear ocean water along the JaisAben coastline" loading="lazy"> <!-- Background photo -->
+          <img src="https://images.pexels.com/photos/29773805/pexels-photo-29773805.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Clear ocean water along a palm-fringed coastline" loading="lazy"> <!-- Background photo -->
           <div class="dest-card__overlay"> <!-- Text overlay -->
             <span class="eyebrow eyebrow--mono eyebrow--light">coast</span> <!-- Category label -->
             <h3>Jais Aben &amp; the Coast</h3> <!-- Destination name -->
@@ -348,7 +354,7 @@
     </div> <!-- Closes culture content column -->
   </section> <!-- Closes Culture section -->
 
-  <br> <!-- seperate the map from a section -->
+  <br> <!-- Extra spacing before the map section -->
 
   <!-- ============ MAP OF MADANG PROVINCE ============ -->
   <section class="google_maps" id="map"> <!-- Google Maps embed section -->
@@ -359,7 +365,9 @@
         <p class="section-lead">Madang Province sits along the north coast of Papua New Guinea, with a mix of coastal, island and inland rainforest areas.</p> <!-- Explanatory lead paragraph -->
       </div> <!-- Closes heading block -->
     </div> <!-- Closes container -->
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31785.679649493693!2d145.76261021116304!3d-5.229681826707004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x68f5e6c94906e557%3A0xfba03fe5fcb7b051!2sMadang%20Madang%20Province!5e0!3m2!1sen!2spg!4v1786619159488!5m2!1sen!2spg" width="800" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    <div class="google_maps__frame-wrap">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31785.679649493693!2d145.76261021116304!3d-5.229681826707004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x68f5e6c94906e557%3A0xfba03fe5fcb7b051!2sMadang%20Madang%20Province!5e0!3m2!1sen!2spg!4v1786619159488!5m2!1sen!2spg" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="Map of Madang Province"></iframe>
+    </div>
   </section>
 
   <!-- ============ PLAN YOUR TRIP ============ -->
@@ -411,6 +419,17 @@
       </div> <!-- Closes plan CTA wrapper -->
     </div> <!-- Closes container -->
   </section> <!-- Closes Plan Your Trip section -->
+
+  <!-- ============ CROSS-LINK: ACCOMMODATION & FOOD ============ -->
+  <section class="page-link-banner reveal"> <!-- Short banner pointing visitors to the dedicated Accommodation & Food page -->
+    <div class="container"> <!-- Centers the banner content -->
+      <h2 class="section-title">Where to Stay &amp; What to Eat</h2> <!-- Banner heading -->
+      <p>From beachfront resorts to guesthouses, and fresh seafood to traditional Papua New Guinean dishes — see the full guide to accommodation and food across Madang Province.</p> <!-- Banner supporting text -->
+      <div class="btn-row"> <!-- Wrapper that centers the CTA button -->
+        <a href="accommodation.html" class="btn btn--coral">Explore Accommodation &amp; Food</a> <!-- Links to the new page -->
+      </div> <!-- Closes button wrapper -->
+    </div> <!-- Closes container -->
+  </section> <!-- Closes cross-link banner -->
 
   <!-- ============ FAQ ============ -->
   <section class="faq reveal"> <!-- FAQ section on a sandy background -->
@@ -522,13 +541,13 @@
       <span class="nav__brand-text nav__brand-text--footer">Madang<em>PNG</em></span> <!-- Footer logo text, reusing the nav brand styling -->
       <p>Discover Madang Province, Papua New Guinea.</p> <!-- Short tagline -->
       <div class="footer__social" aria-label="Social media"> <!-- Wrapper for the social icon links -->
-        <a href="#" aria-label="Facebook"> <!-- Placeholder Facebook link; "#" used since no real URL was provided -->
+        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook"> <!-- Placeholder Facebook link; "#" used since no real URL was provided -->
           <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.25-1.5 1.55-1.5H16.7V3.7C16.4 3.66 15.4 3.58 14.2 3.58c-2.5 0-4.2 1.5-4.2 4.3v2.02H7.3V13h2.7v8h3.5Z"/></svg> <!-- Facebook "f" icon drawn as an SVG path -->
         </a> <!-- Closes Facebook link -->
-        <a href="#" aria-label="Instagram"> <!-- Placeholder Instagram link -->
+        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"> <!-- Placeholder Instagram link -->
           <svg viewBox="0 0 24 24" width="18" height="18"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor"/></svg> <!-- Instagram camera icon drawn as SVG shapes -->
         </a> <!-- Closes Instagram link -->
-        <a href="#" aria-label="YouTube"> <!-- Placeholder YouTube link -->
+        <a href="https://www.youtube.com/watch?v=GyY1-KEqJPc" target="_blank" rel="noopener noreferrer" aria-label="YouTube"> <!-- Actual YouTube link -->
           <svg viewBox="0 0 24 24" width="18" height="18"><rect x="2.5" y="6" width="19" height="12" rx="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path fill="currentColor" d="M10.5 9.5v5l4.5-2.5-4.5-2.5Z"/></svg> <!-- YouTube play-button icon drawn as SVG shapes -->
         </a> <!-- Closes YouTube link -->
       </div> <!-- Closes social icons wrapper -->
@@ -538,24 +557,24 @@
       <h4>Navigate</h4> <!-- Column heading -->
       <a href="#home">Home</a> <!-- Link back to hero -->
       <a href="#discover">Discover</a> <!-- Link to About section -->
-      <a href="#experiences">Experiences</a> <!-- Link to Experiences section -->
       <a href="#destinations">Destinations</a> <!-- Link to Destinations section -->
+      <a href="#culture">Culture</a> <!-- Link to Culture section -->
     </div> <!-- Closes Navigate column -->
 
     <div class="footer__col"> <!-- Third column: Explore links -->
       <h4>Explore</h4> <!-- Column heading -->
-      <a href="#culture">Culture &amp; Heritage</a> <!-- Link to Culture section -->
-      <a href="#experiences">Dive &amp; Snorkel</a> <!-- Link to Experiences section -->
-      <a href="#experiences">Island Hopping</a> <!-- Link to Experiences section -->
-      <a href="#destinations">Offshore Islands</a> <!-- Link to Destinations section -->
+      <a href="experiences.html">Experiences &amp; Adventures</a> <!-- Link to the dedicated Experiences & Adventures page -->
+      <a href="experiences.html#water-islands">Dive &amp; Snorkel</a> <!-- Link to the water & islands section of that page -->
+      <a href="experiences.html#water-islands">Island Hopping</a> <!-- Link to the water & islands section of that page -->
+      <a href="#destinations">Offshore Islands</a> <!-- Link to Destinations section on this page -->
     </div> <!-- Closes Explore column -->
 
     <div class="footer__col"> <!-- Fourth column: Travel links -->
       <h4>Travel</h4> <!-- Column heading -->
       <a href="#plan">Plan Your Trip</a> <!-- Link to Plan section -->
-      <a href="#plan">Getting There</a> <!-- Link to Plan section -->
-      <a href="#plan">Where to Stay</a> <!-- Link to Plan section -->
-      <a href="#">Travel Advisories</a> <!-- Placeholder link, no real URL provided -->
+      <a href="accommodation.html">Accommodation &amp; Food</a> <!-- Link to the dedicated Accommodation & Food page -->
+      <a href="accommodation.html#stay">Where to Stay</a> <!-- Link to the stay section of that page -->
+      <a href="accommodation.html#eat">What to Eat</a> <!-- Link to the eat section of that page -->
     </div> <!-- Closes Travel column -->
   </div> <!-- Closes footer grid -->
 
@@ -569,6 +588,7 @@
   <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 4l-8 8h5v8h6v-8h5z"/></svg> <!-- Upward-pointing arrow icon -->
 </button> <!-- Closes back-to-top button -->
 
-<script src="script.js"></script> <!-- Loads the external JavaScript file; placed at the end so the DOM exists before it runs -->
+
+<script src="script.js"></script> <!--Loads the external JavaScript file; placed at the end so the DOM exists before it runs-->
 </body> <!-- Closes the visible body content -->
 </html> <!-- Closes the root HTML element -->

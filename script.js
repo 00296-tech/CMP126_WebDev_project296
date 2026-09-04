@@ -7,6 +7,7 @@
 
 document.addEventListener('DOMContentLoaded', () => { // waits until the HTML is fully loaded/parsed before running any of the code inside
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches; // checks the user's OS setting for reduced motion and stores true/false
+  const currentPage = document.body.getAttribute('data-page'); // reads which page this is ("home", "experiences", or "accommodation") from the <body> tag, set per-file in the HTML
 
   /* ---------- Footer year ---------- */
   const yearEl = document.getElementById('year'); // grabs the empty <span id="year"> element in the footer
@@ -80,27 +81,35 @@ document.addEventListener('DOMContentLoaded', () => { // waits until the HTML is
     });
   });
 
-  /* ---------- Active nav link highlighting on scroll ---------- */
-  const sections = ['home', 'discover', 'experiences', 'destinations', 'culture', 'plan'] // lists the ids of every major section tracked by the nav
-    .map(id => document.getElementById(id)) // converts each id string into the actual DOM element
-    .filter(Boolean); // removes any entries that came back null (in case an id doesn't exist on the page)
-  const navLinkEls = Array.from(document.querySelectorAll('.nav__link')); // gathers all nav link elements into a plain array
+  /* ---------- Active nav link highlighting ---------- */
+  const navLinkEls = Array.from(document.querySelectorAll('.nav__link')); // gathers all nav link elements into a plain array, used by both approaches below
 
-  function setActiveLink() { // defines a function that figures out which section is currently in view
-    let currentId = sections[0] ? sections[0].id : null; // defaults to the first section's id in case nothing else matches yet
-    const scrollPos = window.scrollY + 140; // current scroll position plus an offset, so a section is considered "active" a bit before it reaches the very top
+  if (currentPage === 'home') { // on the homepage, the active link should track which section is currently scrolled into view
+    const sections = ['home', 'discover', 'experiences', 'destinations', 'culture', 'plan'] // lists the ids of every major section tracked by the nav
+      .map(id => document.getElementById(id)) // converts each id string into the actual DOM element
+      .filter(Boolean); // removes any entries that came back null (in case an id doesn't exist on the page)
 
-    sections.forEach(section => { // loops through every tracked section
-      if (section.offsetTop <= scrollPos) currentId = section.id; // if the user has scrolled past this section's top, mark it as the current one
-    });
+    function setActiveLink() { // defines a function that figures out which section is currently in view
+      let currentId = sections[0] ? sections[0].id : null; // defaults to the first section's id in case nothing else matches yet
+      const scrollPos = window.scrollY + 140; // current scroll position plus an offset, so a section is considered "active" a bit before it reaches the very top
 
-    navLinkEls.forEach(link => { // loops through every nav link
-      const isActive = link.getAttribute('href') === '#' + currentId; // checks whether this link points to the currently active section
-      link.classList.toggle('is-active', isActive); // adds or removes the "active" styling class accordingly
+      sections.forEach(section => { // loops through every tracked section
+        if (section.offsetTop <= scrollPos) currentId = section.id; // if the user has scrolled past this section's top, mark it as the current one
+      });
+
+      navLinkEls.forEach(link => { // loops through every nav link
+        const isActive = link.getAttribute('href') === '#' + currentId; // checks whether this link points to the currently active section
+        link.classList.toggle('is-active', isActive); // adds or removes the "active" styling class accordingly
+      });
+    }
+    setActiveLink(); // runs once immediately so the correct link is highlighted on page load
+    window.addEventListener('scroll', setActiveLink, { passive: true }); // re-checks which link should be active every time the user scrolls
+  } else if (currentPage) { // on a standalone sub-page (experiences or accommodation), the active link never changes with scrolling
+    navLinkEls.forEach(link => { // loops through every nav link once
+      const isActive = link.getAttribute('data-page') === currentPage; // checks whether this link's data-page matches the current page
+      link.classList.toggle('is-active', isActive); // marks that one link active and leaves the rest alone
     });
   }
-  setActiveLink(); // runs once immediately so the correct link is highlighted on page load
-  window.addEventListener('scroll', setActiveLink, { passive: true }); // re-checks which link should be active every time the user scrolls
 
   /* ---------- Reveal on scroll ---------- */
   const revealEls = document.querySelectorAll('.reveal'); // selects every element marked with the "reveal" class (sections that should fade in)
@@ -148,11 +157,14 @@ document.addEventListener('DOMContentLoaded', () => { // waits until the HTML is
     },
     'where-to-stay': { // entry for the "Where to Stay" card
       title: 'Where to Stay', // heading text
-      body: 'Accommodation ranges from beachfront resorts near Madang Town to smaller guesthouses, dive lodges and island-based stays. Availability and pricing vary by season, so check directly with providers.' // detail paragraph text
+      body: 'Accommodation ranges from beachfront resorts near Madang Town to smaller guesthouses, dive lodges and island-based stays. Availability and pricing vary by season, so check directly with providers.', // detail paragraph text
+      link: 'accommodation.html#stay', linkText: 'See the full Accommodation & Food guide', // optional cross-page link rendered below the paragraph
+      externalLink: 'https://www.madangresort.com/thingstodo', externalLinkText: 'Visit Madang Resort' // optional external reference link, rendered as a second button alongside the cross-page link
     },
     'things-to-do': { // entry for the "Things to Do" card
       title: 'Things to Do', // heading text
-      body: 'Diving and snorkelling, island hopping, rainforest walks, fishing trips and cultural visits are commonly arranged through local operators and guesthouses once you arrive.' // detail paragraph text
+      body: 'Diving and snorkelling, island hopping, rainforest walks, fishing trips and cultural visits are commonly arranged through local operators and guesthouses once you arrive.', // detail paragraph text
+      link: 'experiences.html', linkText: 'Browse all Experiences & Adventures' // optional cross-page link rendered below the paragraph
     },
     'best-time': { // entry for the "Best Time to Visit" card
       title: 'Best Time to Visit', // heading text
@@ -185,7 +197,9 @@ document.addEventListener('DOMContentLoaded', () => { // waits until the HTML is
       }
 
       card.setAttribute('aria-expanded', 'true'); // marks this card as the currently expanded one
-      planDetail.innerHTML = `<h4>${data.title}</h4><p>${data.body}</p>`; // fills the detail panel with this card's heading and paragraph
+      const linkHtml = data.link ? `<a class="btn btn--outline-light" href="${data.link}">${data.linkText}</a>` : ''; // builds an optional CTA button if this entry has a cross-page link, otherwise an empty string
+      const externalLinkHtml = data.externalLink ? `<a class="btn btn--outline-light" href="${data.externalLink}" target="_blank" rel="noopener noreferrer">${data.externalLinkText}</a>` : ''; // builds an optional second button for an external reference link, opened in a new tab since it leaves the site
+      planDetail.innerHTML = `<h4>${data.title}</h4><p>${data.body}</p>${linkHtml}${externalLinkHtml}`; // fills the detail panel with this card's heading, paragraph, and any optional link buttons
       planDetail.hidden = false; // makes the detail panel visible
     });
   });
