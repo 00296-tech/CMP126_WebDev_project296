@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="style.css"> <!-- Loads the external stylesheet that controls all visual styling -->
 </head> <!-- Ends the head/metadata section -->
-<body> <!-- Start of the visible page content -->
+<body data-page="home"> <!-- Start of the visible page content; data-page tells script.js this is the homepage, so it should use scroll-spy nav highlighting instead of a fixed active link -->
 
 <!-- Tide line — signature scroll progress indicator -->
 <div class="tide-line" aria-hidden="true"> <!-- Fixed strip at the top of the page; aria-hidden hides it from screen readers since it's decorative -->
@@ -36,12 +36,12 @@
     </a> <!-- Closes the brand link -->
 
     <nav class="nav__links" id="navLinks" aria-label="Primary"> <!-- The list of navigation links; id lets JS open/close it on mobile -->
-      <a href="#home" class="nav__link is-active">Home</a> <!-- Link to the hero/home section; starts marked active -->
-      <a href="#discover" class="nav__link">Discover</a> <!-- Link to the About/Welcome section -->
-      <a href="#experiences" class="nav__link">Experiences</a> <!-- Link to the Experiences section -->
-      <a href="#destinations" class="nav__link">Destinations</a> <!-- Link to the Destinations section -->
-      <a href="#culture" class="nav__link">Culture</a> <!-- Link to the Culture section -->
-      <a href="#plan" class="nav__link">Plan Your Trip</a> <!-- Link to the Plan Your Trip section -->
+      <a href="#home" class="nav__link" data-page="home">Home</a> <!-- Link to the hero/home section; data-page marks it for the site-wide active-link logic -->
+      <a href="experiences.html" class="nav__link" data-page="experiences">Experiences &amp; Adventures</a> <!-- Links to the dedicated Experiences & Adventures page -->
+      <a href="#destinations" class="nav__link">Destinations</a> <!-- Link to the Destinations section on this page -->
+      <a href="culture.html" class="nav__link" data-page="culture">Culture</a> <!-- Links to the dedicated Culture & Heritage page -->
+      <a href="accommodation.html" class="nav__link" data-page="accommodation">Accommodation &amp; Food</a> <!-- Links to the dedicated Accommodation & Food page -->
+      <a href="#plan" class="nav__link">Plan Your Trip</a> <!-- Link to the Plan Your Trip section on this page -->
     </nav> <!-- Closes the navigation links list -->
 
     <div class="nav__actions"> <!-- Wrapper for the right-hand side nav controls (button + burger) -->
@@ -58,7 +58,7 @@
   <!-- ============ HERO ============ -->
   <section class="hero" id="home"> <!-- Full-screen hero section; id="home" is the nav target -->
     <div class="hero__media"> <!-- Wrapper that holds the background image and overlay -->
-      <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1920&q=80](https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1920&q=80)" alt="Image of scuba diver diving in coral waters." loading="eager"> <!-- Hero background photo; loading="eager" because it's above the fold and should load immediately -->
+      <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1920&q=80" alt="Image of scuba diver diving in coral waters." loading="eager"> <!-- Hero background photo; loading="eager" because it's above the fold and should load immediately -->
       <div class="hero__overlay"></div> <!-- Empty div styled in CSS as a dark gradient so the white text stays readable over the photo -->
     </div> <!-- Closes hero media wrapper -->
 
@@ -83,7 +83,7 @@
     <div class="container"> <!-- Centers and constrains the width of the content inside -->
       <div class="quicknav__grid"> <!-- CSS grid that lays the four cards out in a row (or fewer on mobile) -->
 
-        <a href="#experiences" class="qcard"> <!-- First quick-nav card, links down to Experiences -->
+        <a href="experiences.html#water-islands" class="qcard"> <!-- First quick-nav card, links to the water & islands section of the Experiences & Adventures page -->
           <span class="qcard__icon" aria-hidden="true"> <!-- Decorative icon wrapper, hidden from screen readers -->
             <svg viewBox="0 0 48 48" fill="none"><path d="M6 34c6-16 12-22 18-22s12 6 18 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><path d="M4 38c6-4 10-4 16 0s10 4 16 0 8-4 8-4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="14" r="4" fill="currentColor"/></svg> <!-- Hand-drawn island/palm icon -->
           </span> <!-- Closes icon wrapper -->
@@ -92,7 +92,7 @@
           <span class="qcard__arrow" aria-hidden="true">&rarr;</span> <!-- Decorative arrow that animates on hover -->
         </a> <!-- Closes first quick-nav card -->
 
-        <a href="#experiences" class="qcard"> <!-- Second quick-nav card, also links to Experiences -->
+        <a href="experiences.html#water-islands" class="qcard"> <!-- Second quick-nav card, links to the water & islands section of the Experiences & Adventures page -->
           <span class="qcard__icon" aria-hidden="true"> <!-- Decorative icon wrapper -->
             <svg viewBox="0 0 48 48" fill="none"><path d="M8 20c8-6 24-6 32 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><path d="M12 28c6-4 18-4 24 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/><circle cx="24" cy="12" r="5" stroke="currentColor" stroke-width="2.5"/><path d="M24 17v22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg> <!-- Hand-drawn diving flag/waves icon -->
           </span> <!-- Closes icon wrapper -->
@@ -101,7 +101,7 @@
           <span class="qcard__arrow" aria-hidden="true">&rarr;</span> <!-- Decorative arrow icon -->
         </a> <!-- Closes second quick-nav card -->
 
-        <a href="#culture" class="qcard"> <!-- Third quick-nav card, links to Culture section -->
+        <a href="culture.html" class="qcard"> <!-- Third quick-nav card, links to the dedicated Culture & Heritage page -->
           <span class="qcard__icon" aria-hidden="true"> <!-- Decorative icon wrapper -->
             <svg viewBox="0 0 48 48" fill="none"><path d="M24 6l16 9v18l-16 9-16-9V15l16-9z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 15v18M14 20l10-5 10 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg> <!-- Hand-drawn hut/shield icon representing culture -->
           </span> <!-- Closes icon wrapper -->
@@ -110,7 +110,7 @@
           <span class="qcard__arrow" aria-hidden="true">&rarr;</span> <!-- Decorative arrow icon -->
         </a> <!-- Closes third quick-nav card -->
 
-        <a href="#experiences" class="qcard"> <!-- Fourth quick-nav card, links to Experiences -->
+        <a href="experiences.html#nature-wildlife" class="qcard"> <!-- Fourth quick-nav card, links to the nature & wildlife section of the Experiences & Adventures page -->
           <span class="qcard__icon" aria-hidden="true"> <!-- Decorative icon wrapper -->
             <svg viewBox="0 0 48 48" fill="none"><path d="M8 40L20 16l6 10 6-8 8 22" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="36" cy="10" r="4" stroke="currentColor" stroke-width="2.5"/></svg> <!-- Hand-drawn mountain/sun icon representing adventure -->
           </span> <!-- Closes icon wrapper -->
@@ -135,7 +135,6 @@
         <a href="#experiences" class="btn btn--outline">Discover More</a> <!-- Button linking down to the Experiences section -->
       </div> <!-- Closes about text column -->
       <div class="about__media"> <!-- Right column: the featured image and its caption tag -->
-
         <!-- Image alternative src="https://www.facebook.com/100083305594226/posts/the-most-iconic-kalibobo-light-house-in-beautiful-madang-well-captured-by-blue-t/476476711805845/" -->
 
         <img src="Kalibobo_lighthouse01.jpg" alt="Iconic Kalibobo Lighthouse in Madang, along the north coast of Papua New Guinea" loading="lazy"> <!-- Featured photo; loading="lazy" defers loading until it's near the viewport -->
@@ -231,6 +230,9 @@
         </article> <!-- Closes card 6 -->
 
       </div> <!-- Closes experiences grid -->
+      <div class="plan-cta"> <!-- Reuses the same centered-button wrapper style as the Plan section -->
+        <a href="experiences.html" class="btn btn--outline-light">View All Experiences &amp; Adventures</a> <!-- Links to the full Experiences & Adventures page for the complete list -->
+      </div> <!-- Closes the view-all CTA wrapper -->
     </div> <!-- Closes container -->
   </section> <!-- Closes Experiences section -->
 
@@ -348,6 +350,7 @@
       <p>Music, dance, storytelling and food remain central to community life and celebration, and local craftsmanship — from weaving to carving — reflects generations of skill and knowledge of the local environment.</p> <!-- Second paragraph -->
       <p>Visiting respectfully means listening first: asking before photographing people, supporting local artisans directly, and treating ceremonies and sacred sites with the same care a guest would show at home.</p> <!-- Third paragraph, on respectful tourism -->
       <a href="#plan" class="btn btn--outline btn--outline-light">Explore Madang Culture</a> <!-- Call-to-action button linking to the Plan section -->
+      <a href="culture.html" class="btn btn--outline btn--outline-light">View Full Culture &amp; Heritage Guide</a> <!-- Links to the full Culture & Heritage page for the complete guide -->
     </div> <!-- Closes culture content column -->
   </section> <!-- Closes Culture section -->
 
@@ -382,13 +385,11 @@
           <h3>Getting There</h3> <!-- Card title -->
           <p>Madang is generally reached by domestic flight, with onward road and boat options locally.</p> <!-- Card summary text -->
         </button> <!-- Closes card 1 -->
-        <a href="https://www.madangresort.com/thingstodo">
-          <button class="plan-card" data-plan="where-to-stay" aria-expanded="false"> <!-- Card 2 button -->
+        <button class="plan-card" data-plan="where-to-stay" aria-expanded="false"> <!-- Card 2 button -->
           <span class="plan-card__icon" aria-hidden="true">🏝</span> <!-- Emoji icon representing accommodation -->
           <h3>Where to Stay</h3> <!-- Card title -->
           <p>Options range from beachfront resorts to smaller guesthouses and island lodges.</p> <!-- Card summary text -->
         </button> <!-- Closes card 2 -->
-        </a>
         <button class="plan-card" data-plan="things-to-do" aria-expanded="false"> <!-- Card 3 button -->
           <span class="plan-card__icon" aria-hidden="true">🤿</span> <!-- Emoji icon representing activities -->
           <h3>Things to Do</h3> <!-- Card title -->
@@ -418,6 +419,17 @@
       </div> <!-- Closes plan CTA wrapper -->
     </div> <!-- Closes container -->
   </section> <!-- Closes Plan Your Trip section -->
+
+  <!-- ============ CROSS-LINK: ACCOMMODATION & FOOD ============ -->
+  <section class="page-link-banner reveal"> <!-- Short banner pointing visitors to the dedicated Accommodation & Food page -->
+    <div class="container"> <!-- Centers the banner content -->
+      <h2 class="section-title">Where to Stay &amp; What to Eat</h2> <!-- Banner heading -->
+      <p>From beachfront resorts to guesthouses, and fresh seafood to traditional Papua New Guinean dishes — see the full guide to accommodation and food across Madang Province.</p> <!-- Banner supporting text -->
+      <div class="btn-row"> <!-- Wrapper that centers the CTA button -->
+        <a href="accommodation.html" class="btn btn--coral">Explore Accommodation &amp; Food</a> <!-- Links to the new page -->
+      </div> <!-- Closes button wrapper -->
+    </div> <!-- Closes container -->
+  </section> <!-- Closes cross-link banner -->
 
   <!-- ============ FAQ ============ -->
   <section class="faq reveal"> <!-- FAQ section on a sandy background -->
@@ -545,24 +557,25 @@
       <h4>Navigate</h4> <!-- Column heading -->
       <a href="#home">Home</a> <!-- Link back to hero -->
       <a href="#discover">Discover</a> <!-- Link to About section -->
-      <a href="#experiences">Experiences</a> <!-- Link to Experiences section -->
       <a href="#destinations">Destinations</a> <!-- Link to Destinations section -->
+      <a href="#culture">Culture</a> <!-- Link to Culture teaser section on this page -->
     </div> <!-- Closes Navigate column -->
 
     <div class="footer__col"> <!-- Third column: Explore links -->
       <h4>Explore</h4> <!-- Column heading -->
-      <a href="#culture">Culture &amp; Heritage</a> <!-- Link to Culture section -->
-      <a href="#experiences">Dive &amp; Snorkel</a> <!-- Link to Experiences section -->
-      <a href="#experiences">Island Hopping</a> <!-- Link to Experiences section -->
-      <a href="#destinations">Offshore Islands</a> <!-- Link to Destinations section -->
+      <a href="experiences.html">Experiences &amp; Adventures</a> <!-- Link to the dedicated Experiences & Adventures page -->
+      <a href="culture.html">Culture &amp; Heritage</a> <!-- Link to the dedicated Culture & Heritage page -->
+      <a href="experiences.html#water-islands">Dive &amp; Snorkel</a> <!-- Link to the water & islands section of that page -->
+      <a href="experiences.html#water-islands">Island Hopping</a> <!-- Link to the water & islands section of that page -->
+      <a href="#destinations">Offshore Islands</a> <!-- Link to Destinations section on this page -->
     </div> <!-- Closes Explore column -->
 
     <div class="footer__col"> <!-- Fourth column: Travel links -->
       <h4>Travel</h4> <!-- Column heading -->
       <a href="#plan">Plan Your Trip</a> <!-- Link to Plan section -->
-      <a href="#plan">Getting There</a> <!-- Link to Plan section -->
-      <a href="#plan">Where to Stay</a> <!-- Link to Plan section -->
-      <a href="#">Travel Advisories</a> <!-- Placeholder link, no real URL provided -->
+      <a href="accommodation.html">Accommodation &amp; Food</a> <!-- Link to the dedicated Accommodation & Food page -->
+      <a href="accommodation.html#stay">Where to Stay</a> <!-- Link to the stay section of that page -->
+      <a href="accommodation.html#eat">What to Eat</a> <!-- Link to the eat section of that page -->
     </div> <!-- Closes Travel column -->
   </div> <!-- Closes footer grid -->
 
