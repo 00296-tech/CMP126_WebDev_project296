@@ -132,22 +132,33 @@ p { margin: 0; line-height: 1.7; } /* paragraphs have no default margin and comf
 }
 .tide-line__wave { display: none; } /* the wave SVG is currently not shown visually; kept in markup for potential future styling */
 .tide-line__fill {
-  height: 100%; width: 0%; /* starts empty; JavaScript updates the width as the page scrolls */
+  height: 100%; width: 0%; /* starting width; overridden by the scroll-driven animation below in browsers that support it */
   background: linear-gradient(90deg, var(--lagoon), var(--tide), var(--coral)); /* gradient fill moving from teal through turquoise to coral */
-  transition: width 0.12s linear; /* smooths out the width changes as scroll position updates */
+  animation: tide-fill linear both; /* ties the fill's width to scroll progress instead of a JS scroll-listener */
+  animation-timeline: scroll(root); /* "root" = the whole page's scroll progress, from 0 at the top to 1 at the bottom */
 }
+@keyframes tide-fill { from { width: 0%; } to { width: 100%; } } /* the fill grows from empty to full exactly as the page timeline goes from 0 to 1 */
 
 /* ================= NAV ================= */
 .nav {
   position: fixed; top: 6px; left: 0; width: 100%; z-index: 1000; /* keeps the nav pinned to the top of the viewport, just below the tide line */
-  transition: background 0.4s var(--ease), box-shadow 0.4s var(--ease), padding 0.4s var(--ease); /* smoothly animates the nav's appearance change on scroll */
+  background: rgba(11, 61, 66, 0.5); backdrop-filter: blur(6px); /* sensible mid-point default for browsers that don't support the scroll-driven animation below */
+  animation: nav-solidify linear both; /* smoothly swaps the transparent hero-top nav for a solid, blurred bar as the page scrolls */
+  animation-timeline: scroll(root); /* tracks the page's overall scroll progress */
+  animation-range: 0px 90px; /* the transition completes within the first 90px of scrolling, so it reads as an early, snappy change rather than a slow fade */
+}
+@keyframes nav-solidify {
+  from { background: rgba(11, 61, 66, 0); backdrop-filter: blur(0px); box-shadow: 0 0 0 0 rgba(0,0,0,0); }
+  to { background: rgba(11, 61, 66, 0.92); backdrop-filter: blur(14px); box-shadow: 0 8px 30px -18px rgba(0,0,0,0.5); }
 }
 .nav__inner {
   max-width: var(--container-w); margin: 0 auto; padding: 22px 32px; /* centers and pads the nav content to match the container width */
   display: flex; align-items: center; justify-content: space-between; /* lays out logo, links and actions in a row with space between them */
+  animation: nav-inner-solidify linear both; /* shrinks the nav's padding in step with the same scroll range as the background change above */
+  animation-timeline: scroll(root);
+  animation-range: 0px 90px;
 }
-.nav.is-scrolled { background: rgba(11, 61, 66, 0.92); backdrop-filter: blur(14px); box-shadow: 0 8px 30px -18px rgba(0,0,0,0.5); } /* darker, blurred "glass" background applied by JS once the user scrolls */
-.nav.is-scrolled .nav__inner { padding: 14px 32px; } /* shrinks the nav's vertical padding once scrolled, making it more compact */
+@keyframes nav-inner-solidify { from { padding-block: 22px; } to { padding-block: 14px; } }
 
 .nav__brand { display: flex; align-items: center; gap: 10px; color: #fff; } /* aligns the logo icon and text side by side */
 .nav__brand-mark { color: var(--tide); display: flex; } /* colors the logo icon turquoise */
@@ -161,18 +172,39 @@ p { margin: 0; line-height: 1.7; } /* paragraphs have no default margin and comf
   content: ""; position: absolute; left: 0; bottom: -4px; width: 0; height: 2px; background: var(--tide); /* an invisible underline that starts at zero width */
   transition: width 0.3s var(--ease); /* animates the underline growing in on hover/active */
 }
-.nav__link:hover::after, .nav__link.is-active::after { width: 100%; } /* expands the underline to full width on hover or when marked active by JS */
-.nav__link.is-active { color: #fff; } /* brightens the text color of the currently active nav link */
+.nav__link:hover::after, .nav__link.is-active::after { width: 100%; } /* expands the underline to full width on hover, or when marked active by the homepage's scroll-spy script */
+.nav__link.is-active { color: #fff; } /* brightens the text color of the currently active nav link (homepage scroll-spy) */
+/* On the three standalone sub-pages, "active" never changes with scrolling, so it's set directly in CSS from the
+   <body data-page="..."> attribute instead of needing JavaScript to compare it against each link. */
+body[data-page="experiences"] .nav__link[data-page="experiences"],
+body[data-page="culture"] .nav__link[data-page="culture"],
+body[data-page="accommodation"] .nav__link[data-page="accommodation"] {
+  color: #fff;
+}
+body[data-page="experiences"] .nav__link[data-page="experiences"]::after,
+body[data-page="culture"] .nav__link[data-page="culture"]::after,
+body[data-page="accommodation"] .nav__link[data-page="accommodation"]::after {
+  width: 100%;
+}
 
 .nav__actions { display: flex; align-items: center; gap: 18px; } /* aligns the CTA button and burger icon together */
+
+/* ---- Mobile menu toggle: a visually-hidden checkbox drives the open/closed state, no JS needed ---- */
+.menu-toggle {
+  position: absolute; opacity: 0; width: 1px; height: 1px; overflow: hidden; /* visually hidden but still focusable and operable with a keyboard or screen reader, unlike display:none */
+}
 .nav__burger {
   display: none; flex-direction: column; justify-content: center; gap: 5px; /* hidden by default; only shown on mobile via media query below */
-  width: 42px; height: 42px; background: rgba(255,255,255,0.12); border: none; border-radius: 10px; /* button sizing and shape */
+  width: 42px; height: 42px; background: rgba(255,255,255,0.12); border: none; border-radius: 10px; /* sizing and shape, matching the old button */
+  cursor: pointer; /* the label now stands in for the old button, so it needs a pointer cursor to look clickable */
 }
+.nav:has(.menu-toggle:focus-visible) .nav__burger { outline: 3px solid var(--coral); outline-offset: 3px; } /* since the real checkbox is visually hidden, its keyboard focus ring is drawn around the visible label instead */
 .nav__burger span { display: block; width: 20px; height: 2px; background: #fff; margin: 0 auto; transition: transform 0.3s var(--ease), opacity 0.3s var(--ease); } /* the three lines that form the hamburger icon */
-.nav__burger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); } /* rotates the top line into the top half of an X when menu is open */
-.nav__burger.is-open span:nth-child(2) { opacity: 0; } /* hides the middle line when menu is open */
-.nav__burger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); } /* rotates the bottom line into the bottom half of an X when menu is open */
+.nav:has(.menu-toggle:checked) .nav__burger span:nth-child(1) { transform: translateY(7px) rotate(45deg); } /* rotates the top line into the top half of an X when the checkbox is checked (menu open) */
+.nav:has(.menu-toggle:checked) .nav__burger span:nth-child(2) { opacity: 0; } /* hides the middle line when the menu is open */
+.nav:has(.menu-toggle:checked) .nav__burger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); } /* rotates the bottom line into the bottom half of an X when the menu is open */
+body:has(.menu-toggle:checked) { overflow: hidden; } /* locks page scrolling behind the open mobile menu — no JS needed, :has() reads the checkbox's state directly */
+
 
 /* ================= HERO ================= */
 .hero {
@@ -337,40 +369,48 @@ p { margin: 0; line-height: 1.7; } /* paragraphs have no default margin and comf
 
 /* ================= PLAN ================= */
 .plan { padding: 100px 0; background: var(--shell); } /* vertical spacing and light background for the planning section */
-.plan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; } /* three equal columns of plan cards */
+.plan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start; } /* three equal columns of plan cards; align-items:start stops a card growing taller (once expanded) from stretching its row-mates */
 .plan-card {
-  text-align: left; background: var(--sand); border: 2px solid transparent; border-radius: var(--radius-md); /* left-aligned text, sandy background, rounded corners, invisible border reserved for the hover state */
-  padding: 28px 26px; transition: border-color 0.3s var(--ease), transform 0.3s var(--ease), background 0.3s var(--ease); /* smooth transitions for hover/active states */
+  background: var(--sand); border: 2px solid transparent; border-radius: var(--radius-md); overflow: hidden; /* sandy background, rounded corners, invisible border reserved for the open/hover state; overflow:hidden keeps the detail panel's corners clipped to match */
+  transition: border-color 0.3s var(--ease), transform 0.3s var(--ease), background 0.3s var(--ease); /* smooth transitions for hover/open states */
 }
-.plan-card:hover, .plan-card[aria-expanded="true"] { border-color: var(--lagoon); transform: translateY(-4px); background: #fff; } /* highlights the card border, lifts it, and brightens the background on hover or when expanded */
+.plan-card:hover, .plan-card[open] { border-color: var(--lagoon); background: #fff; } /* highlights the card border and brightens the background on hover, or once it's open */
+.plan-card:hover { transform: translateY(-4px); } /* only lift on hover — an open card stays put so its detail panel doesn't visually jump */
+.plan-card__summary {
+  list-style: none; cursor: pointer; padding: 28px 26px; text-align: left; /* a <details>'s <summary> is the always-visible, clickable header — list-style:none removes the default disclosure triangle */
+  display: flex; flex-direction: column; align-items: flex-start; position: relative; /* stacks icon/heading/text vertically, matching the old button's layout */
+}
+.plan-card__summary::-webkit-details-marker { display: none; } /* removes Safari/Chrome's default triangle marker so the custom one below can take its place */
+.plan-card__summary::after {
+  content: "+"; position: absolute; top: 26px; right: 22px; font-family: var(--font-mono); font-size: 1.2rem; color: var(--coral); /* a small "+" indicator standing in for the old chevron/expand cue */
+  transition: transform 0.3s var(--ease); /* animates the rotation below */
+}
+.plan-card[open] .plan-card__summary::after { transform: rotate(45deg); } /* rotates the "+" into an "×" shape once the card is open, using the native [open] attribute — no JS needed */
 .plan-card__icon { font-size: 1.6rem; display: block; margin-bottom: 14px; } /* sizing and spacing for the emoji icon */
-.plan-card h3 { font-size: 1.1rem; margin-bottom: 8px; } /* card heading styling */
-.plan-card p { color: var(--ink-soft); font-size: 0.92rem; } /* muted card description text */
-
-.plan-detail {
-  margin-top: 24px; background: var(--reef-deep); color: var(--shell); /* dark panel styled to stand out from the light cards above it */
-  border-radius: var(--radius-md); padding: 30px 34px; /* rounded corners and inner spacing */
-}
-.plan-detail h4 { font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 10px; color: var(--tide); } /* turquoise heading inside the detail panel */
-.plan-detail p { color: rgba(255,253,248,0.85); } /* semi-transparent light paragraph text inside the detail panel */
-.plan-detail .btn { margin-top: 18px; margin-right: 14px; } /* spacing above, and between, the optional link buttons rendered inside the detail panel */
+.plan-card__summary h3 { font-size: 1.1rem; margin-bottom: 8px; } /* card heading styling */
+.plan-card__summary p { color: var(--ink-soft); font-size: 0.92rem; margin: 0; } /* muted card description text */
+.plan-card__detail { margin: 0 26px 26px; padding: 20px 22px; background: var(--reef-deep); color: var(--shell); border-radius: var(--radius-sm); } /* dark inset panel for the fuller explanation, revealed natively when the <details> opens */
+.plan-card__detail p { color: rgba(255,253,248,0.85); margin: 0; } /* semi-transparent light paragraph text inside the detail panel */
+.plan-card__detail .btn { margin-top: 14px; margin-right: 10px; } /* spacing above, and between, any optional link buttons inside the detail panel */
 
 .plan-cta { text-align: center; margin-top: 50px; } /* centers the "Start Planning" button with space above it */
 
 /* ================= FAQ / ACCORDION ================= */
 .faq { padding: 100px 0; background: var(--sand); } /* vertical spacing and sandy background for the FAQ section */
-.accordion__item { border-bottom: 1px solid rgba(11,61,66,0.18); } /* divider line under each FAQ question/answer pair */
+.accordion__item { border-bottom: 1px solid rgba(11,61,66,0.18); } /* divider line under each FAQ question/answer pair; each item is a native <details> element */
 .accordion__trigger {
-  width: 100%; background: none; border: none; text-align: left; /* makes the whole question row clickable and removes default button styling */
+  width: 100%; text-align: left; cursor: pointer; list-style: none; /* a <details>'s <summary> is the always-visible, clickable header; list-style:none removes the default disclosure triangle */
   display: flex; justify-content: space-between; align-items: center; /* places the question text and the +/x icon on opposite sides */
   padding: 24px 4px; font-family: var(--font-display); font-size: 1.08rem; color: var(--ink); /* spacing and heading-style typography for the question text */
 }
+.accordion__trigger::-webkit-details-marker { display: none; } /* removes Safari/Chrome's default triangle marker so the custom "+" icon below can take its place */
+.accordion__trigger h3 { font: inherit; color: inherit; margin: 0; } /* the question text sits inside an <h3> for document-outline/screen-reader navigation purposes, but should look identical to plain text on the summary */
 .accordion__icon {
   font-family: var(--font-mono); color: var(--coral); font-size: 1.3rem; flex-shrink: 0; margin-left: 16px; /* coral mono "+" icon that won't shrink and has space from the question text */
   transition: transform 0.3s var(--ease); /* smoothly animates the rotation when the answer opens */
 }
-.accordion__trigger[aria-expanded="true"] .accordion__icon { transform: rotate(45deg); } /* rotates the "+" into an "x" shape when the answer panel is open */
-.accordion__panel { padding: 0 4px 24px; max-width: 68ch; } /* inner spacing and readable line-length limit for the answer text */
+.accordion__item[open] .accordion__icon { transform: rotate(45deg); } /* rotates the "+" into an "×" shape once the <details> is open, using the native [open] attribute — no JS needed */
+.accordion__panel { padding: 0 4px 24px; max-width: 68ch; } /* inner spacing and readable line-length limit for the answer text; shown/hidden natively by the browser along with [open] */
 .accordion__panel p { color: var(--ink-soft); } /* muted color for the answer paragraph */
 
 /* ================= FINAL CTA ================= */
@@ -404,18 +444,36 @@ p { margin: 0; line-height: 1.7; } /* paragraphs have no default margin and comf
 /* ================= BACK TO TOP ================= */
 .back-to-top {
   position: fixed; bottom: 28px; right: 28px; z-index: 900; /* pins the button to the bottom-right corner of the viewport */
-  width: 48px; height: 48px; border-radius: 50%; border: none; /* circular button shape */
+  width: 48px; height: 48px; border-radius: 50%; /* circular button shape */
   background: var(--coral); color: #fff; display: flex; align-items: center; justify-content: center; /* coral fill with the arrow icon centered inside */
   box-shadow: 0 14px 30px -12px rgba(242,112,58,0.6); /* glowing shadow matching the coral color */
-  opacity: 0; transform: translateY(16px) scale(0.8); pointer-events: none; /* hidden and unclickable by default until JS reveals it */
-  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease); /* smooth fade/scale-in transition */
+  transition: background 0.25s var(--ease); /* smooth hover color change */
 }
-.back-to-top.is-visible { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; } /* fully visible and clickable state, toggled by JS on scroll */
 .back-to-top:hover { background: var(--coral-deep); } /* darkens on hover */
+@supports (animation-timeline: scroll()) { /* browsers that support scroll-driven animations get a progressive fade/scale-in instead of always showing the button */
+  .back-to-top {
+    opacity: 0; transform: translateY(16px) scale(0.8); pointer-events: none; /* starting (top-of-page) state: hidden, unclickable and slightly offset */
+    animation: back-to-top-reveal linear both; /* ties visibility directly to scroll position instead of a JS scroll-listener */
+    animation-timeline: scroll(root); /* tracks the page's overall scroll progress */
+    animation-range: 500px 800px; /* fades and scales in between 500px and 800px of scrolling down */
+  }
+}
+@keyframes back-to-top-reveal { to { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; } }
 
 /* ================= REVEAL ON SCROLL ================= */
-.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); } /* starts sections invisible and slightly lower, ready to fade/slide in */
-.reveal.is-visible { opacity: 1; transform: translateY(0); } /* final visible state, toggled by JS via IntersectionObserver */
+.reveal { opacity: 1; } /* safe default for every browser: fully visible, no animation, so content is never stuck hidden */
+@supports (animation-timeline: view()) { /* browsers that support scroll-driven view animations get the fade/slide-up entrance instead */
+  .reveal {
+    opacity: 0; transform: translateY(28px); /* starting (off-screen) state */
+    animation: reveal-in linear both; /* ties the fade/slide-in to this element's own position in the viewport instead of a JS IntersectionObserver */
+    animation-timeline: view(); /* a "view timeline": 0 when the element enters the viewport, 1 when it fully exits */
+    animation-range: entry 0% cover 30%; /* the animation completes over the first 30% of the element's scroll-through, so it settles in well before it's fully on screen */
+  }
+}
+@keyframes reveal-in { to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { animation: none !important; opacity: 1 !important; transform: none !important; } /* respects reduced-motion by skipping the entrance animation entirely, on top of the site-wide override near the top of this file */
+}
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 1080px) { /* styles applied on tablets and smaller laptop windows */
@@ -445,7 +503,7 @@ p { margin: 0; line-height: 1.7; } /* paragraphs have no default margin and comf
     padding: 110px 32px 40px; gap: 26px; /* spacing inside the mobile menu panel */
     transform: translateX(100%); transition: transform 0.4s var(--ease); /* starts off-screen to the right, ready to slide in */
   }
-  .nav__links.is-open { transform: translateX(0); box-shadow: -20px 0 50px -20px rgba(0,0,0,0.5); } /* slides the panel into view and adds a shadow, toggled by JS */
+  .nav:has(.menu-toggle:checked) .nav__links { transform: translateX(0); box-shadow: -20px 0 50px -20px rgba(0,0,0,0.5); } /* slides the panel into view and adds a shadow, driven purely by the checkbox's :checked state */
   .nav__link { font-size: 1.05rem; } /* slightly larger tap targets for mobile links */
   .nav__burger { display: flex; } /* shows the hamburger button only at this screen size */
   .nav__actions .btn--sm { display: none; } /* hides the "Explore Now" button in the nav bar on mobile to reduce clutter */
