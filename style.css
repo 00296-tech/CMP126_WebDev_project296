@@ -125,23 +125,9 @@ p { margin: 0; line-height: 1.7; } /* paragraphs have no default margin and comf
 .btn--sm { padding: 10px 20px; font-size: 0.82rem; } /* smaller button size, used in the nav bar */
 .btn--lg { padding: 18px 40px; font-size: 1.05rem; } /* larger button size, used in the final call-to-action */
 
-/* ================= TIDE LINE (signature scroll indicator) ================= */
-.tide-line {
-  position: fixed; top: 0; left: 0; width: 100%; height: 6px; z-index: 1001; /* pins a thin bar to the very top of the viewport, above the nav */
-  background: rgba(11, 61, 66, 0.12); /* faint track color showing the "unfilled" portion */
-}
-.tide-line__wave { display: none; } /* the wave SVG is currently not shown visually; kept in markup for potential future styling */
-.tide-line__fill {
-  height: 100%; width: 0%; /* starting width; overridden by the scroll-driven animation below in browsers that support it */
-  background: linear-gradient(90deg, var(--lagoon), var(--tide), var(--coral)); /* gradient fill moving from teal through turquoise to coral */
-  animation: tide-fill linear both; /* ties the fill's width to scroll progress instead of a JS scroll-listener */
-  animation-timeline: scroll(root); /* "root" = the whole page's scroll progress, from 0 at the top to 1 at the bottom */
-}
-@keyframes tide-fill { from { width: 0%; } to { width: 100%; } } /* the fill grows from empty to full exactly as the page timeline goes from 0 to 1 */
-
 /* ================= NAV ================= */
 .nav {
-  position: fixed; top: 6px; left: 0; width: 100%; z-index: 1000; /* keeps the nav pinned to the top of the viewport, just below the tide line */
+  position: fixed; top: 0px; left: 0; width: 100%; z-index: 1000; /* keeps the nav pinned to the top of the viewport, just below the tide line */
   background: rgba(11, 61, 66, 0.5); backdrop-filter: blur(6px); /* sensible mid-point default for browsers that don't support the scroll-driven animation below */
   animation: nav-solidify linear both; /* smoothly swaps the transparent hero-top nav for a solid, blurred bar as the page scrolls */
   animation-timeline: scroll(root); /* tracks the page's overall scroll progress */
@@ -459,21 +445,6 @@ body:has(.menu-toggle:checked) { overflow: hidden; } /* locks page scrolling beh
   }
 }
 @keyframes back-to-top-reveal { to { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; } }
-
-/* ================= REVEAL ON SCROLL ================= */
-.reveal { opacity: 1; } /* safe default for every browser: fully visible, no animation, so content is never stuck hidden */
-@supports (animation-timeline: view()) { /* browsers that support scroll-driven view animations get the fade/slide-up entrance instead */
-  .reveal {
-    opacity: 0; transform: translateY(28px); /* starting (off-screen) state */
-    animation: reveal-in linear both; /* ties the fade/slide-in to this element's own position in the viewport instead of a JS IntersectionObserver */
-    animation-timeline: view(); /* a "view timeline": 0 when the element enters the viewport, 1 when it fully exits */
-    animation-range: entry 0% cover 30%; /* the animation completes over the first 30% of the element's scroll-through, so it settles in well before it's fully on screen */
-  }
-}
-@keyframes reveal-in { to { opacity: 1; transform: translateY(0); } }
-@media (prefers-reduced-motion: reduce) {
-  .reveal { animation: none !important; opacity: 1 !important; transform: none !important; } /* respects reduced-motion by skipping the entrance animation entirely, on top of the site-wide override near the top of this file */
-}
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 1080px) { /* styles applied on tablets and smaller laptop windows */
