@@ -1,26 +1,19 @@
 <!DOCTYPE html> <!-- Tells the browser this is an HTML5 document -->
 <html lang="en"> <!-- Root element of the page; lang="en" tells screen readers/browsers the content is in English -->
-<head> <!-- Container for metadata that isn't displayed directly on the page -->
-<meta charset="UTF-8"> <!-- Sets the character encoding so special characters (like &middot;) display correctly -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Makes the page render at the device's width and scale correctly on mobile -->
-<title>Discover Madang | Where Paradise Meets Adventure</title> <!-- Text shown in the browser tab and search results -->
-<meta name="description" content="Discover Madang Province, Papua New Guinea — tropical islands, coral reefs, rainforest and living culture on the north coast."> <!-- Summary used by search engines for SEO -->
+  <head> <!-- Container for metadata that isn't displayed directly on the page -->
+    <meta charset="UTF-8"> <!-- Sets the character encoding so special characters (like &middot;) display correctly -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Makes the page render at the device's width and scale correctly on mobile -->
+    <meta name="description" content="Discover Madang Province, Papua New Guinea — tropical islands, coral reefs, rainforest and living culture on the north coast."> <!-- Summary used by search engines for SEO -->
+    
+    <title>Discover Madang | Where Paradise Meets Adventure</title> <!-- Text shown in the browser tab and search results -->
 
-<link rel="preconnect" href="https://fonts.googleapis.com"> <!-- Tells the browser to start connecting to Google Fonts early, speeding up font loading -->
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <!-- Same early-connection hint for the font file server itself -->
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"> <!-- Loads the three Google Fonts (Fraunces, Plus Jakarta Sans, Space Mono) used across the site -->
-
-<link rel="stylesheet" href="style.css"> <!-- Loads the external stylesheet that controls all visual styling -->
-</head> <!-- Ends the head/metadata section -->
-<body data-page="home"> <!-- Start of the visible page content; data-page tells script.js this is the homepage, so it should use scroll-spy nav highlighting instead of a fixed active link -->
-
-<!-- Tide line — signature scroll progress indicator -->
-<div class="tide-line" aria-hidden="true"> <!-- Fixed strip at the top of the page; aria-hidden hides it from screen readers since it's decorative -->
-  <svg viewBox="0 0 1200 24" preserveAspectRatio="none" class="tide-line__wave"> <!-- SVG canvas for a wave shape (currently unused visually, kept for future styling) -->
-    <path d="M0,12 C150,22 250,2 400,12 C550,22 650,2 800,12 C950,22 1050,2 1200,12 L1200,24 L0,24 Z"></path> <!-- Defines the wavy line shape using SVG path commands -->
-  </svg> <!-- Closes the SVG element -->
-  <div class="tide-line__fill" id="tideFill"></div> <!-- Empty div whose width JavaScript fills in as the user scrolls, like a rising tide -->
-</div> <!-- Closes the tide-line container -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"> <!-- Tells the browser to start connecting to Google Fonts early, speeding up font loading -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <!-- Same early-connection hint for the font file server itself -->
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"> <!-- Loads the three Google Fonts (Fraunces, Plus Jakarta Sans, Space Mono) used across the site -->
+    <link rel="stylesheet" href="style.css"> <!-- Loads the external stylesheet that controls all visual styling -->
+  </head> <!-- Ends the head/metadata section -->
+  
+  <body data-page="home"> <!-- Start of the visible page content; data-page tells script.js this is the homepage, so it should use scroll-spy nav highlighting instead of a fixed active link -->
 
 <!-- Skip link -->
 <a href="#main" class="skip-link">Skip to content</a> <!-- Accessibility link letting keyboard users jump straight past the nav to the main content -->
