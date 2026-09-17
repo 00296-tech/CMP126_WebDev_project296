@@ -1,26 +1,26 @@
 /* ==========================================================================
-   MADANG PROVINCE TOURISM — STYLESHEET
+   MADANG PROVINCE TOURISM - STYLESHEET
    Design tokens: ocean-forward palette, Fraunces + Plus Jakarta Sans + Space Mono
-   Signature element: the "tide line" — a wave-shaped scroll progress indicator
+   Signature element: the "tide line" - a wave-shaped scroll progress indicator
    ========================================================================== */
 
 :root { /* :root targets the whole document so these custom properties (variables) are available everywhere */
   /* Madang provincial flag-inspired palette */
-  --reef-deep:      #000000;   /* black — used for dark section backgrounds */
-  --lagoon:         #AA0000;   /* deep red — used for primary links, buttons, and accents */
-  --tide:           #FFCC00;   /* gold/yellow — used for highlights and the tide line */
-  --palm:           #5C0000;   /* dark maroon — used for contrast-heavy section backgrounds */
-  --sand:           #F6F1E6;   /* warm off-white — used for light alternating sections */
-  --shell:          #FFFFFF;   /* white — used for card surfaces and light text on dark backgrounds */
-  --coral:          #AA0000;   /* red accent — used for primary buttons and CTA elements */
-  --coral-deep:     #7D0000;   /* darker red — used for button hover states */
-  --ink:            #111111;   /* near-black — used for main body text */
-  --ink-soft:       #4A4A4A;   /* muted gray — used for secondary/paragraph text */
+  --reef-deep:      #000000;   /* black - used for dark section backgrounds */
+  --lagoon:         #AA0000;   /* deep red - used for primary links, buttons, and accents */
+  --tide:           #FFCC00;   /* gold/yellow - used for highlights and the tide line */
+  --palm:           #5C0000;   /* dark maroon - used for contrast-heavy section backgrounds */
+  --sand:           #F6F1E6;   /* warm off-white - used for light alternating sections */
+  --shell:          #FFFFFF;   /* white - used for card surfaces and light text on dark backgrounds */
+  --coral:          #AA0000;   /* red accent - used for primary buttons and CTA elements */
+  --coral-deep:     #7D0000;   /* darker red - used for button hover states */
+  --ink:            #111111;   /* near-black - used for main body text */
+  --ink-soft:       #4A4A4A;   /* muted gray - used for secondary/paragraph text */
 
   /* Type */
   --font-display: "Fraunces", Georgia, serif; /* serif font used for headings; Georgia is the fallback if Fraunces fails to load */
   --font-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif; /* sans-serif font used for paragraphs and UI text */
-  --font-mono: "Space Mono", "Courier New", monospace; /* monospace font used for small labels/eyebrows for a technical, "instrument" feel */
+  --font-mono: "Comfortaa", "Nunito", sans-serif; /* 
 
   /* Layout */
   --container-w: 1240px; /* maximum width for centered page content */
@@ -111,13 +111,13 @@ p { margin: 0; line-height: 1.7; } /* paragraphs have no default margin and comf
   font-weight: 700; /* bold button text */
   font-size: 0.95rem; /* button text size */
   border: 2px solid transparent; /* reserves space for a border so hover states don't shift layout */
-  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), background 0.35s var(--ease), color 0.35s var(--ease); /* smoothly animates these properties on state changes */
+  transition: box-shadow 0.35s var(--ease), background 0.35s var(--ease), color 0.35s var(--ease); /* smoothly animates these properties on state changes */
   white-space: nowrap; /* keeps button text on a single line */
 }
 .btn--coral { background: var(--coral); color: #fff; box-shadow: 0 14px 30px -12px rgba(242, 112, 58, 0.55); } /* primary button style: coral fill with a matching glow shadow */
-.btn--coral:hover { background: var(--coral-deep); transform: translateY(-2px); } /* darkens and lifts the button slightly on hover */
+.btn--coral:hover { background: var(--coral-deep); } /* darkens on hover */
 .btn--ghost { background: rgba(255,255,255,0.12); color: #fff; border-color: rgba(255,255,255,0.55); backdrop-filter: blur(6px); } /* semi-transparent "glass" button style used over photos */
-.btn--ghost:hover { background: rgba(255,255,255,0.22); transform: translateY(-2px); } /* brightens and lifts the ghost button on hover */
+.btn--ghost:hover { background: rgba(255,255,255,0.22); } /* brightens on hover */
 .btn--outline { background: transparent; color: var(--lagoon); border-color: var(--lagoon); } /* outlined button style on light backgrounds */
 .btn--outline:hover { background: var(--lagoon); color: #fff; } /* fills in with color on hover */
 .btn--outline-light { color: var(--shell); border-color: rgba(255,255,255,0.55); } /* outlined button variant for dark backgrounds */
@@ -125,26 +125,26 @@ p { margin: 0; line-height: 1.7; } /* paragraphs have no default margin and comf
 .btn--sm { padding: 10px 20px; font-size: 0.82rem; } /* smaller button size, used in the nav bar */
 .btn--lg { padding: 18px 40px; font-size: 1.05rem; } /* larger button size, used in the final call-to-action */
 
+/* ================= TIDE LINE (signature scroll indicator) ================= */
+.tide-line {
+  position: fixed; top: 0; left: 0; width: 100%; height: 6px; z-index: 1001; /* pins a thin bar to the very top of the viewport, above the nav */
+  background: rgba(11, 61, 66, 0.12); /* faint track color, kept for visual depth even though the fill below is now static */
+}
+.tide-line__wave { display: none; } /* the wave SVG is currently not shown visually; kept in markup for potential future styling */
+.tide-line__fill {
+  height: 100%; width: 100%; /* a static full-width accent bar; no longer tied to scroll position */
+  background: linear-gradient(90deg, var(--lagoon), var(--tide), var(--coral)); /* gradient fill moving from teal through turquoise to coral */
+}
+
 /* ================= NAV ================= */
 .nav {
-  position: fixed; top: 0px; left: 0; width: 100%; z-index: 1000; /* keeps the nav pinned to the top of the viewport, just below the tide line */
-  background: rgba(11, 61, 66, 0.5); backdrop-filter: blur(6px); /* sensible mid-point default for browsers that don't support the scroll-driven animation below */
-  animation: nav-solidify linear both; /* smoothly swaps the transparent hero-top nav for a solid, blurred bar as the page scrolls */
-  animation-timeline: scroll(root); /* tracks the page's overall scroll progress */
-  animation-range: 0px 90px; /* the transition completes within the first 90px of scrolling, so it reads as an early, snappy change rather than a slow fade */
-}
-@keyframes nav-solidify {
-  from { background: rgba(11, 61, 66, 0); backdrop-filter: blur(0px); box-shadow: 0 0 0 0 rgba(0,0,0,0); }
-  to { background: rgba(11, 61, 66, 0.92); backdrop-filter: blur(14px); box-shadow: 0 8px 30px -18px rgba(0,0,0,0.5); }
+  position: fixed; top: 6px; left: 0; width: 100%; z-index: 1000; /* keeps the nav pinned to the top of the viewport, just below the tide line */
+  background: rgba(11, 61, 66, 0.92); backdrop-filter: blur(14px); box-shadow: 0 8px 30px -18px rgba(0,0,0,0.5); /* always solid and blurred, no scroll-triggered transition */
 }
 .nav__inner {
-  max-width: var(--container-w); margin: 0 auto; padding: 22px 32px; /* centers and pads the nav content to match the container width */
+  max-width: var(--container-w); margin: 0 auto; padding: 14px 32px; /* centers and pads the nav content to match the container width; fixed compact padding, no scroll-triggered resize */
   display: flex; align-items: center; justify-content: space-between; /* lays out logo, links and actions in a row with space between them */
-  animation: nav-inner-solidify linear both; /* shrinks the nav's padding in step with the same scroll range as the background change above */
-  animation-timeline: scroll(root);
-  animation-range: 0px 90px;
 }
-@keyframes nav-inner-solidify { from { padding-block: 22px; } to { padding-block: 14px; } }
 
 .nav__brand { display: flex; align-items: center; gap: 10px; color: #fff; } /* aligns the logo icon and text side by side */
 .nav__brand-mark { color: var(--tide); display: flex; } /* colors the logo icon turquoise */
@@ -193,16 +193,67 @@ body:has(.menu-toggle:checked) { overflow: hidden; } /* locks page scrolling beh
 
 
 /* ================= HERO ================= */
-.hero {
-  position: relative; min-height: 100svh; display: flex; align-items: flex-end; /* full-viewport-height section with content anchored to the bottom */
-  color: #fff; overflow: hidden; /* white text by default; hides anything that overflows the section bounds */
+.hero0 {
+  position: relative; 
+  min-height: 100vh; 
+  display: flex; 
+  align-items: flex-end; 
+  color: #fff; 
+  background-image: linear-gradient(180deg, rgba(11,61,66,0.55) 0%, rgba(11,61,66,0.35) 35%, rgba(9,30,32,0.88) 100%), 
+                    url("https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1920&q=80");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
-.hero__media { position: absolute; inset: 0; z-index: 0; } /* stretches the image wrapper to fill the entire hero behind the text */
-.hero__media img { width: 100%; height: 100%; object-fit: cover; } /* scales the photo to cover the whole area without distorting it */
-.hero__overlay {
-  position: absolute; inset: 0; /* covers the entire hero on top of the image */
-  background: linear-gradient(180deg, rgba(11,61,66,0.55) 0%, rgba(11,61,66,0.35) 35%, rgba(9,30,32,0.88) 100%); /* dark gradient, darkest at the bottom where the text sits, keeping it readable */
+
+.hero1 {
+  position: relative; 
+  min-height: 100vh; 
+  display: flex; 
+  align-items: flex-end; 
+  color: #fff; 
+  background-image: linear-gradient(180deg, rgba(11,61,66,0.55) 0%, rgba(11,61,66,0.35) 35%, rgba(9,30,32,0.88) 100%), 
+                    url("https://images.pexels.com/photos/33191057/pexels-photo-33191057.jpeg?auto=compress&cs=tinysrgb&w=1920");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
+
+.hero2 {
+  position: relative; 
+  min-height: 100vh; 
+  display: flex; 
+  align-items: flex-end; 
+  color: #fff; 
+  background-image: linear-gradient(180deg, rgba(11,61,66,0.55) 0%, rgba(11,61,66,0.35) 35%, rgba(9,30,32,0.88) 100%), 
+                    url("https://images.pexels.com/photos/32656681/pexels-photo-32656681.jpeg?auto=compress&cs=tinysrgb&w=1920");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.hero3 {
+  position: relative; 
+  min-height: 100vh; 
+  display: flex; 
+  align-items: flex-end; 
+  color: #fff; 
+  background-image: linear-gradient(180deg, rgba(11,61,66,0.55) 0%, rgba(11,61,66,0.35) 35%, rgba(9,30,32,0.88) 100%), 
+                    url("https://images.pexels.com/photos/37180573/pexels-photo-37180573.jpeg?auto=compress&cs=tinysrgb&w=1920");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.madang{
+  color:var(--tide);
+  text-shadow: 0 0 10px var(--reef-deep), 0 0 20px var(--reef-deep), 0 0 30px var(--reef-deep);
+}
+
 .hero__content { position: relative; z-index: 1; max-width: 760px; padding: 0 32px 110px; margin-left: 5vw; } /* positions the text above the overlay, limits its width, offsets it slightly from the left edge */
 .hero__title { font-size: clamp(2.6rem, 6vw, 4.6rem); letter-spacing: -0.01em; margin-bottom: 22px; } /* large, responsive headline size with slightly tightened letter spacing */
 .hero__desc { max-width: 55ch; font-size: 1.08rem; color: rgba(255,255,255,0.9); margin-bottom: 34px; } /* supporting paragraph sizing, width limit and near-white color */
@@ -214,30 +265,8 @@ body:has(.menu-toggle:checked) { overflow: hidden; } /* locks page scrolling beh
   color: rgba(255,255,255,0.85); font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; /* small uppercase mono label styling */
 }
 .hero__scroll-dot {
-  width: 10px; height: 10px; border-radius: 50%; background: var(--tide); /* a small turquoise circle */
-  animation: bob 2.2s ease-in-out infinite; /* applies the bobbing keyframe animation defined below, repeating forever */
+  width: 10px; height: 10px; border-radius: 50%; background: var(--tide); /* a small turquoise circle; static, no animation */
 }
-@keyframes bob { 0%, 100% { transform: translateY(0); opacity: 1; } 50% { transform: translateY(10px); opacity: 0.5; } } /* defines the up-and-down fading motion used by the scroll dot */
-
-/* ================= QUICK NAV CARDS ================= */
-.quicknav { position: relative; z-index: 2; margin-top: -86px; padding-bottom: 90px; } /* negative top margin pulls the cards up so they overlap the bottom of the hero */
-.quicknav__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; } /* four equal-width columns with gaps between the cards */
-.qcard {
-  background: var(--shell); /* white/cream card background */
-  border-radius: var(--radius-md) var(--radius-lg) var(--radius-md) var(--radius-md); /* slightly larger rounding on the top-right corner for visual interest */
-  padding: 30px 26px 34px; /* inner spacing of the card */
-  box-shadow: var(--shadow-soft); /* soft drop shadow lifting the card off the page */
-  position: relative; /* allows child elements to be positioned relative to the card if needed */
-  display: flex; flex-direction: column; /* stacks icon, title, description and arrow vertically */
-  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease); /* animates the hover lift effect smoothly */
-}
-.qcard:hover { transform: translateY(-8px); box-shadow: 0 30px 50px -20px rgba(11,61,66,0.4); } /* lifts the card up and deepens its shadow on hover */
-.qcard__icon { color: var(--lagoon); margin-bottom: 18px; transition: transform 0.4s var(--ease), color 0.4s var(--ease); } /* teal icon color with smooth transition for the hover effect below */
-.qcard:hover .qcard__icon { color: var(--coral); transform: scale(1.1) rotate(-4deg); } /* icon turns coral and playfully scales/rotates on hover */
-.qcard__title { font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 8px; } /* card heading styling */
-.qcard__desc { color: var(--ink-soft); font-size: 0.92rem; flex: 1; } /* card description text; flex:1 pushes the arrow to the bottom of the card */
-.qcard__arrow { margin-top: 18px; color: var(--coral); font-size: 1.2rem; transition: transform 0.35s var(--ease); } /* spacing and color for the arrow icon, with a transition for the hover slide */
-.qcard:hover .qcard__arrow { transform: translateX(8px); } /* slides the arrow to the right on hover, suggesting forward motion */
 
 /* ================= ABOUT ================= */
 .about { padding: 40px 0 110px; background: var(--shell); } /* vertical spacing and light background for the About section */
@@ -271,21 +300,20 @@ body:has(.menu-toggle:checked) { overflow: hidden; } /* locks page scrolling beh
   border-radius: var(--radius-md); /* rounded corners */
   overflow: hidden; /* clips the image corners to match the rounded card */
   position: relative; /* allows the arrow badge to be positioned within the card */
-  transition: transform 0.4s var(--ease), border-color 0.4s var(--ease); /* smooth hover lift and border color change */
+  transition: border-color 0.3s var(--ease); /* smooth hover border-color change, no movement */
 }
-.exp-card:hover { transform: translateY(-6px); border-color: var(--tide); } /* lifts the card and highlights its border on hover */
-.exp-card__media { aspect-ratio: 4/3; overflow: hidden; } /* fixed image aspect ratio with overflow hidden for the zoom effect below */
-.exp-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); } /* image fills its box and transitions smoothly when scaled */
-.exp-card:hover .exp-card__media img { transform: scale(1.08); } /* subtly zooms the image in when the card is hovered */
+.exp-card:hover { border-color: var(--tide); } /* highlights the card border on hover */
+.exp-card__media { aspect-ratio: 4/3; overflow: hidden; } /* fixed image aspect ratio */
+.exp-card__media img { width: 100%; height: 100%; object-fit: cover; } /* image fills its box; static, no hover zoom */
 .exp-card__body { padding: 24px 26px 30px; } /* inner spacing for the card's text content */
 .exp-card__body h3 { color: var(--shell); font-size: 1.3rem; margin: 6px 0 10px; } /* light-colored card heading sized for the dark background */
 .exp-card__body p { color: rgba(255,253,248,0.72); font-size: 0.95rem; } /* semi-transparent light text for the card description */
 .exp-card__arrow {
   position: absolute; top: 20px; right: 20px; width: 38px; height: 38px; border-radius: 50%; /* circular badge pinned to the top-right of the card */
   background: rgba(255,255,255,0.14); color: #fff; display: flex; align-items: center; justify-content: center; /* centers the arrow glyph inside the circle */
-  transition: background 0.35s var(--ease), transform 0.35s var(--ease); /* smooth hover color and rotation change */
+  transition: background 0.3s var(--ease); /* smooth hover color change, no rotation */
 }
-.exp-card:hover .exp-card__arrow { background: var(--coral); transform: rotate(45deg); } /* turns the badge coral and rotates the arrow to point outward on hover */
+.exp-card:hover .exp-card__arrow { background: var(--coral); } /* turns the badge coral on hover */
 
 /* ================= DESTINATIONS ================= */
 .destinations { padding: 100px 0; background: var(--shell); } /* vertical spacing and light background for this section */
@@ -295,8 +323,7 @@ body:has(.menu-toggle:checked) { overflow: hidden; } /* locks page scrolling beh
   box-shadow: var(--shadow-card); /* drop shadow under each card */
 }
 .dest-card--wide { grid-column: span 2; aspect-ratio: auto; } /* makes the first card span two grid columns and removes the fixed aspect ratio */
-.dest-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); } /* image fills the card and animates smoothly on hover zoom */
-.dest-card:hover img { transform: scale(1.06); } /* subtle zoom-in effect on hover */
+.dest-card img { width: 100%; height: 100%; object-fit: cover; } /* image fills the card; static, no hover zoom */
 .dest-card__overlay {
   position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; /* stacks the text content at the bottom of the card */
   padding: 26px; background: linear-gradient(0deg, rgba(9,30,32,0.88) 0%, rgba(9,30,32,0.05) 60%); /* dark gradient fading upward so the bottom text stays legible */
@@ -354,49 +381,26 @@ body:has(.menu-toggle:checked) { overflow: hidden; } /* locks page scrolling beh
 }
 
 /* ================= PLAN ================= */
-.plan { padding: 100px 0; background: var(--shell); } /* vertical spacing and light background for the planning section */
-.plan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start; } /* three equal columns of plan cards; align-items:start stops a card growing taller (once expanded) from stretching its row-mates */
-.plan-card {
-  background: var(--sand); border: 2px solid transparent; border-radius: var(--radius-md); overflow: hidden; /* sandy background, rounded corners, invisible border reserved for the open/hover state; overflow:hidden keeps the detail panel's corners clipped to match */
-  transition: border-color 0.3s var(--ease), transform 0.3s var(--ease), background 0.3s var(--ease); /* smooth transitions for hover/open states */
-}
-.plan-card:hover, .plan-card[open] { border-color: var(--lagoon); background: #fff; } /* highlights the card border and brightens the background on hover, or once it's open */
-.plan-card:hover { transform: translateY(-4px); } /* only lift on hover — an open card stays put so its detail panel doesn't visually jump */
-.plan-card__summary {
-  list-style: none; cursor: pointer; padding: 28px 26px; text-align: left; /* a <details>'s <summary> is the always-visible, clickable header — list-style:none removes the default disclosure triangle */
-  display: flex; flex-direction: column; align-items: flex-start; position: relative; /* stacks icon/heading/text vertically, matching the old button's layout */
-}
-.plan-card__summary::-webkit-details-marker { display: none; } /* removes Safari/Chrome's default triangle marker so the custom one below can take its place */
-.plan-card__summary::after {
-  content: "+"; position: absolute; top: 26px; right: 22px; font-family: var(--font-mono); font-size: 1.2rem; color: var(--coral); /* a small "+" indicator standing in for the old chevron/expand cue */
-  transition: transform 0.3s var(--ease); /* animates the rotation below */
-}
-.plan-card[open] .plan-card__summary::after { transform: rotate(45deg); } /* rotates the "+" into an "×" shape once the card is open, using the native [open] attribute — no JS needed */
-.plan-card__icon { font-size: 1.6rem; display: block; margin-bottom: 14px; } /* sizing and spacing for the emoji icon */
-.plan-card__summary h3 { font-size: 1.1rem; margin-bottom: 8px; } /* card heading styling */
-.plan-card__summary p { color: var(--ink-soft); font-size: 0.92rem; margin: 0; } /* muted card description text */
-.plan-card__detail { margin: 0 26px 26px; padding: 20px 22px; background: var(--reef-deep); color: var(--shell); border-radius: var(--radius-sm); } /* dark inset panel for the fuller explanation, revealed natively when the <details> opens */
-.plan-card__detail p { color: rgba(255,253,248,0.85); margin: 0; } /* semi-transparent light paragraph text inside the detail panel */
-.plan-card__detail .btn { margin-top: 14px; margin-right: 10px; } /* spacing above, and between, any optional link buttons inside the detail panel */
-
-.plan-cta { text-align: center; margin-top: 50px; } /* centers the "Start Planning" button with space above it */
+.plan-cta { text-align: center; margin-top: 50px; } /* centers a CTA button with space above it; reused wherever a section needs a single centered button */
 
 /* ================= FAQ / ACCORDION ================= */
+/* Note: these items are plain <div>/<button> elements (not native <details>/<summary>),
+   and there's no JavaScript here to toggle them open/closed on click. With no interactive
+   mechanism available in CSS alone for this markup, every answer is simply shown at all
+   times (overriding the "hidden" attribute) so the content stays readable rather than
+   permanently invisible. The "+" icon is kept as a static decorative marker. */
 .faq { padding: 100px 0; background: var(--sand); } /* vertical spacing and sandy background for the FAQ section */
-.accordion__item { border-bottom: 1px solid rgba(11,61,66,0.18); } /* divider line under each FAQ question/answer pair; each item is a native <details> element */
+.accordion__item { border-bottom: 1px solid rgba(11,61,66,0.18); } /* divider line under each FAQ question/answer pair */
 .accordion__trigger {
-  width: 100%; text-align: left; cursor: pointer; list-style: none; /* a <details>'s <summary> is the always-visible, clickable header; list-style:none removes the default disclosure triangle */
-  display: flex; justify-content: space-between; align-items: center; /* places the question text and the +/x icon on opposite sides */
+  width: 100%; text-align: left; background: none; border: none; cursor: default; /* looks like part of the layout rather than a non-functional button */
+  display: flex; justify-content: space-between; align-items: center; /* places the question text and the "+" icon on opposite sides */
   padding: 24px 4px; font-family: var(--font-display); font-size: 1.08rem; color: var(--ink); /* spacing and heading-style typography for the question text */
 }
-.accordion__trigger::-webkit-details-marker { display: none; } /* removes Safari/Chrome's default triangle marker so the custom "+" icon below can take its place */
-.accordion__trigger h3 { font: inherit; color: inherit; margin: 0; } /* the question text sits inside an <h3> for document-outline/screen-reader navigation purposes, but should look identical to plain text on the summary */
+.accordion__trigger h3 { font: inherit; color: inherit; margin: 0; } /* the question text sits inside an <h3> for document-outline/screen-reader navigation purposes */
 .accordion__icon {
-  font-family: var(--font-mono); color: var(--coral); font-size: 1.3rem; flex-shrink: 0; margin-left: 16px; /* coral mono "+" icon that won't shrink and has space from the question text */
-  transition: transform 0.3s var(--ease); /* smoothly animates the rotation when the answer opens */
+  font-family: var(--font-mono); color: var(--coral); font-size: 1.3rem; flex-shrink: 0; margin-left: 16px; /* coral mono "+" icon that won't shrink and has space from the question text; static, not tied to any open/closed state */
 }
-.accordion__item[open] .accordion__icon { transform: rotate(45deg); } /* rotates the "+" into an "×" shape once the <details> is open, using the native [open] attribute — no JS needed */
-.accordion__panel { padding: 0 4px 24px; max-width: 68ch; } /* inner spacing and readable line-length limit for the answer text; shown/hidden natively by the browser along with [open] */
+.accordion__panel[hidden] { display: block; padding: 0 4px 24px; max-width: 68ch; } /* overrides the browser's default "hidden" behavior so the answer always shows */
 .accordion__panel p { color: var(--ink-soft); } /* muted color for the answer paragraph */
 
 /* ================= FINAL CTA ================= */
@@ -436,25 +440,20 @@ body:has(.menu-toggle:checked) { overflow: hidden; } /* locks page scrolling beh
   transition: background 0.25s var(--ease); /* smooth hover color change */
 }
 .back-to-top:hover { background: var(--coral-deep); } /* darkens on hover */
-@supports (animation-timeline: scroll()) { /* browsers that support scroll-driven animations get a progressive fade/scale-in instead of always showing the button */
-  .back-to-top {
-    opacity: 0; transform: translateY(16px) scale(0.8); pointer-events: none; /* starting (top-of-page) state: hidden, unclickable and slightly offset */
-    animation: back-to-top-reveal linear both; /* ties visibility directly to scroll position instead of a JS scroll-listener */
-    animation-timeline: scroll(root); /* tracks the page's overall scroll progress */
-    animation-range: 500px 800px; /* fades and scales in between 500px and 800px of scrolling down */
-  }
-}
-@keyframes back-to-top-reveal { to { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; } }
+
+/* ================= REVEAL ON SCROLL ================= */
+/* Sections marked .reveal in the HTML simply render normally — no fade/slide-in
+   animation plays as they scroll into view. Kept as a plain, permanent opacity:1
+   rather than deleting the class from every page, so the markup doesn't need touching. */
+.reveal { opacity: 1; }
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 1080px) { /* styles applied on tablets and smaller laptop windows */
-  .quicknav__grid { grid-template-columns: repeat(2, 1fr); } /* drops the quick-nav cards from 4 to 2 columns */
   .exp-grid { grid-template-columns: repeat(2, 1fr); } /* drops experience cards from 3 to 2 columns */
   .dest-grid { grid-template-columns: repeat(2, 1fr); } /* drops destination cards from 3 to 2 columns */
   .dest-card--wide { grid-column: span 2; } /* keeps the wide card spanning both columns at this size */
   .why-log { grid-template-columns: repeat(2, 1fr); } /* drops the dive-log entries from 4 to 2 columns */
   .why-entry:nth-child(2) { border-right: none; } /* removes the divider after the second entry since it's now the end of a row */
-  .plan-grid { grid-template-columns: repeat(2, 1fr); } /* drops plan cards from 3 to 2 columns */
   .footer__grid { grid-template-columns: 1fr 1fr; } /* stacks the footer into 2 columns instead of 4 */
 }
 
@@ -480,14 +479,11 @@ body:has(.menu-toggle:checked) { overflow: hidden; } /* locks page scrolling beh
   .nav__actions .btn--sm { display: none; } /* hides the "Explore Now" button in the nav bar on mobile to reduce clutter */
 
   .hero__content { margin-left: 0; padding: 0 22px 90px; } /* removes the left offset and reduces side padding on small screens */
-  .quicknav { margin-top: -50px; } /* reduces the overlap amount for the quick-nav cards on mobile */
-  .quicknav__grid { grid-template-columns: 1fr; } /* stacks quick-nav cards into a single column */
   .exp-grid { grid-template-columns: 1fr; } /* stacks experience cards into a single column */
   .dest-grid { grid-template-columns: 1fr; } /* stacks destination cards into a single column */
   .dest-card--wide { grid-column: span 1; } /* the wide card no longer spans two columns since there's only one */
   .why-log { grid-template-columns: 1fr; } /* stacks the dive-log entries into a single column */
   .why-entry { border-right: none !important; } /* removes all vertical dividers since entries are now stacked */
-  .plan-grid { grid-template-columns: 1fr; } /* stacks plan cards into a single column */
   .footer__grid { grid-template-columns: 1fr; padding-bottom: 40px; } /* stacks all footer columns into one on mobile */
   .container { padding: 0 20px; } /* slightly tighter side padding on very small screens */
   .final-cta { padding: 100px 24px; } /* reduces the final CTA section's padding on mobile */
@@ -544,12 +540,11 @@ body:has(.menu-toggle:checked) { overflow: hidden; } /* locks page scrolling beh
 /* ---- Simple grid card variant used for accommodation/food categories (image top, text below, like .exp-card but on a light background) ---- */
 .info-card {
   background: var(--shell); border: 1px solid rgba(11,61,66,0.1); border-radius: var(--radius-md); overflow: hidden; /* light card with a faint border, rounded and clipped */
-  box-shadow: var(--shadow-card); transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease); /* soft shadow with a smooth hover lift */
+  box-shadow: var(--shadow-card); transition: box-shadow 0.3s var(--ease); /* soft shadow with a smooth hover deepen, no movement */
 }
-.info-card:hover { transform: translateY(-6px); box-shadow: 0 26px 46px -20px rgba(11,61,66,0.32); } /* lifts and deepens the shadow on hover */
-.info-card__media { aspect-ratio: 4/3; overflow: hidden; } /* fixed-ratio image area, clipped for the zoom effect below */
-.info-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); } /* image fills its box and animates smoothly when scaled */
-.info-card:hover .info-card__media img { transform: scale(1.07); } /* subtle zoom on hover, matching .exp-card's behavior */
+.info-card:hover { box-shadow: 0 26px 46px -20px rgba(11,61,66,0.32); } /* deepens the shadow on hover */
+.info-card__media { aspect-ratio: 4/3; overflow: hidden; } /* fixed-ratio image area */
+.info-card__media img { width: 100%; height: 100%; object-fit: cover; } /* image fills its box; static, no hover zoom */
 .info-card__body { padding: 24px 26px 28px; } /* inner spacing for the card's text content */
 .info-card__body h3 { font-size: 1.2rem; margin: 4px 0 10px; } /* card heading size and spacing */
 .info-card__body p { color: var(--ink-soft); font-size: 0.94rem; } /* muted description text */
@@ -570,4 +565,47 @@ body:has(.menu-toggle:checked) { overflow: hidden; } /* locks page scrolling beh
 @media (max-width: 760px) {
   .hero--page { min-height: 52vh; } /* shorter still on mobile, since there's less need for a tall hero on small screens */
   .page-link-banner .btn-row { flex-direction: column; align-items: stretch; } /* stacks CTA buttons full-width on mobile */
+}
+
+/* Ensure details hides contents when closed */
+details:not([open]) > :not(summary) {
+  display: none !important;
+}
+
+/* Base accordion layout */
+.accordion__item {
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 0.5rem;
+}
+
+.accordion__trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  font-weight: bold;
+  cursor: pointer;
+  list-style: none; /* Hide default browser triangle */
+}
+
+/* Remove default marker icon in Chrome, Safari, Firefox */
+.accordion__trigger::-webkit-details-marker,
+.accordion__trigger::marker {
+  display: none;
+}
+
+.accordion__panel {
+  padding: 0.5rem 0 1rem;
+}
+
+/* Switch + to − when open */
+.accordion__item[open] .accordion__icon {
+  transform: rotate(45deg); /* Optional smooth rotation effect */
+}
+
+.accordion__icon {
+  display: inline-block;
+  transition: transform 0.2s ease;
+  font-size: 1.2rem;
+  color: #c00000;
 }
