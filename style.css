@@ -1,26 +1,26 @@
 /* ==========================================================================
-   MADANG PROVINCE TOURISM - STYLESHEET
+   MADANG PROVINCE TOURISM — STYLESHEET
    Design tokens: ocean-forward palette, Fraunces + Plus Jakarta Sans + Space Mono
-   Signature element: the "tide line" - a wave-shaped scroll progress indicator
+   Signature element: the "tide line" — a wave-shaped scroll progress indicator
    ========================================================================== */
 
 :root { /* :root targets the whole document so these custom properties (variables) are available everywhere */
   /* Madang provincial flag-inspired palette */
-  --reef-deep:      #000000;   /* black - used for dark section backgrounds */
-  --lagoon:         #AA0000;   /* deep red - used for primary links, buttons, and accents */
-  --tide:           #FFCC00;   /* gold/yellow - used for highlights and the tide line */
-  --palm:           #5C0000;   /* dark maroon - used for contrast-heavy section backgrounds */
-  --sand:           #F6F1E6;   /* warm off-white - used for light alternating sections */
-  --shell:          #FFFFFF;   /* white - used for card surfaces and light text on dark backgrounds */
-  --coral:          #AA0000;   /* red accent - used for primary buttons and CTA elements */
-  --coral-deep:     #7D0000;   /* darker red - used for button hover states */
-  --ink:            #111111;   /* near-black - used for main body text */
-  --ink-soft:       #4A4A4A;   /* muted gray - used for secondary/paragraph text */
+  --reef-deep:      #000000;   /* black — used for dark section backgrounds */
+  --lagoon:         #AA0000;   /* deep red — used for primary links, buttons, and accents */
+  --tide:           #FFCC00;   /* gold/yellow — used for highlights and the tide line */
+  --palm:           #5C0000;   /* dark maroon — used for contrast-heavy section backgrounds */
+  --sand:           #F6F1E6;   /* warm off-white — used for light alternating sections */
+  --shell:          #FFFFFF;   /* white — used for card surfaces and light text on dark backgrounds */
+  --coral:          #AA0000;   /* red accent — used for primary buttons and CTA elements */
+  --coral-deep:     #7D0000;   /* darker red — used for button hover states */
+  --ink:            #111111;   /* near-black — used for main body text */
+  --ink-soft:       #4A4A4A;   /* muted gray — used for secondary/paragraph text */
 
   /* Type */
   --font-display: "Fraunces", Georgia, serif; /* serif font used for headings; Georgia is the fallback if Fraunces fails to load */
   --font-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif; /* sans-serif font used for paragraphs and UI text */
-  --font-mono: "Comfortaa", "Nunito", sans-serif; /* 
+  --font-mono: "Space Mono", "Courier New", monospace; /* monospace font used for small labels/eyebrows for a technical, "instrument" feel */
 
   /* Layout */
   --container-w: 1240px; /* maximum width for centered page content */
@@ -193,67 +193,16 @@ body:has(.menu-toggle:checked) { overflow: hidden; } /* locks page scrolling beh
 
 
 /* ================= HERO ================= */
-.hero0 {
-  position: relative; 
-  min-height: 100vh; 
-  display: flex; 
-  align-items: flex-end; 
-  color: #fff; 
-  background-image: linear-gradient(180deg, rgba(11,61,66,0.55) 0%, rgba(11,61,66,0.35) 35%, rgba(9,30,32,0.88) 100%), 
-                    url("https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1920&q=80");
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+.hero {
+  position: relative; min-height: 100svh; display: flex; align-items: flex-end; /* full-viewport-height section with content anchored to the bottom */
+  color: #fff; overflow: hidden; /* white text by default; hides anything that overflows the section bounds */
 }
-
-.hero1 {
-  position: relative; 
-  min-height: 100vh; 
-  display: flex; 
-  align-items: flex-end; 
-  color: #fff; 
-  background-image: linear-gradient(180deg, rgba(11,61,66,0.55) 0%, rgba(11,61,66,0.35) 35%, rgba(9,30,32,0.88) 100%), 
-                    url("https://images.pexels.com/photos/33191057/pexels-photo-33191057.jpeg?auto=compress&cs=tinysrgb&w=1920");
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+.hero__media { position: absolute; inset: 0; z-index: 0; } /* stretches the image wrapper to fill the entire hero behind the text */
+.hero__media img { width: 100%; height: 100%; object-fit: cover; } /* scales the photo to cover the whole area without distorting it */
+.hero__overlay {
+  position: absolute; inset: 0; /* covers the entire hero on top of the image */
+  background: linear-gradient(180deg, rgba(11,61,66,0.55) 0%, rgba(11,61,66,0.35) 35%, rgba(9,30,32,0.88) 100%); /* dark gradient, darkest at the bottom where the text sits, keeping it readable */
 }
-
-.hero2 {
-  position: relative; 
-  min-height: 100vh; 
-  display: flex; 
-  align-items: flex-end; 
-  color: #fff; 
-  background-image: linear-gradient(180deg, rgba(11,61,66,0.55) 0%, rgba(11,61,66,0.35) 35%, rgba(9,30,32,0.88) 100%), 
-                    url("https://images.pexels.com/photos/32656681/pexels-photo-32656681.jpeg?auto=compress&cs=tinysrgb&w=1920");
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.hero3 {
-  position: relative; 
-  min-height: 100vh; 
-  display: flex; 
-  align-items: flex-end; 
-  color: #fff; 
-  background-image: linear-gradient(180deg, rgba(11,61,66,0.55) 0%, rgba(11,61,66,0.35) 35%, rgba(9,30,32,0.88) 100%), 
-                    url("https://images.pexels.com/photos/37180573/pexels-photo-37180573.jpeg?auto=compress&cs=tinysrgb&w=1920");
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.madang{
-  color:var(--tide);
-  text-shadow: 0 0 10px var(--reef-deep), 0 0 20px var(--reef-deep), 0 0 30px var(--reef-deep);
-}
-
 .hero__content { position: relative; z-index: 1; max-width: 760px; padding: 0 32px 110px; margin-left: 5vw; } /* positions the text above the overlay, limits its width, offsets it slightly from the left edge */
 .hero__title { font-size: clamp(2.6rem, 6vw, 4.6rem); letter-spacing: -0.01em; margin-bottom: 22px; } /* large, responsive headline size with slightly tightened letter spacing */
 .hero__desc { max-width: 55ch; font-size: 1.08rem; color: rgba(255,255,255,0.9); margin-bottom: 34px; } /* supporting paragraph sizing, width limit and near-white color */
@@ -565,47 +514,4 @@ body:has(.menu-toggle:checked) { overflow: hidden; } /* locks page scrolling beh
 @media (max-width: 760px) {
   .hero--page { min-height: 52vh; } /* shorter still on mobile, since there's less need for a tall hero on small screens */
   .page-link-banner .btn-row { flex-direction: column; align-items: stretch; } /* stacks CTA buttons full-width on mobile */
-}
-
-/* Ensure details hides contents when closed */
-details:not([open]) > :not(summary) {
-  display: none !important;
-}
-
-/* Base accordion layout */
-.accordion__item {
-  border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 0.5rem;
-}
-
-.accordion__trigger {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 0;
-  font-weight: bold;
-  cursor: pointer;
-  list-style: none; /* Hide default browser triangle */
-}
-
-/* Remove default marker icon in Chrome, Safari, Firefox */
-.accordion__trigger::-webkit-details-marker,
-.accordion__trigger::marker {
-  display: none;
-}
-
-.accordion__panel {
-  padding: 0.5rem 0 1rem;
-}
-
-/* Switch + to − when open */
-.accordion__item[open] .accordion__icon {
-  transform: rotate(45deg); /* Optional smooth rotation effect */
-}
-
-.accordion__icon {
-  display: inline-block;
-  transition: transform 0.2s ease;
-  font-size: 1.2rem;
-  color: #c00000;
 }

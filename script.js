@@ -1,5 +1,18 @@
 /* ==========================================================================
    MADANG PROVINCE TOURISM — SCRIPT
+   Almost everything on this site is now handled by CSS alone:
+     - the mobile menu open/close, hamburger animation and scroll lock  → :checked / :has()
+     - the tide-line scroll progress bar and the nav's solidify-on-scroll → scroll-driven animations
+     - the reveal-on-scroll fade-ins and the back-to-top button's fade-in → scroll-driven animations
+     - the FAQ accordion and the "Plan Your Trip" cards                 → native <details>/<summary>
+   What's left here is only the handful of things CSS genuinely cannot do:
+     - reading today's date for the footer's copyright year
+     - tracking which homepage section is currently scrolled into view, to
+       highlight the matching nav link (there's no CSS selector for "which
+       of several sections is currently in the viewport")
+     - closing the mobile menu after a link inside it is clicked or Escape
+       is pressed, since it's a fixed-position overlay that would otherwise
+       stay open on top of the page after navigating
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => { // waits until the HTML is fully loaded/parsed before running any of the code inside
